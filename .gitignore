@@ -13,3 +13,9 @@
 .externalNativeBuild
 .cxx
 local.properties
+
+/app/src/main/java/com/example/sl_trip_planner/data/ApiKeys.java
+
+ApiKeys.class
+
+ApiKeys.java
