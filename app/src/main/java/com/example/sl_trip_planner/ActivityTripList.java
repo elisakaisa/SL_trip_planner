@@ -7,7 +7,7 @@ import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
-import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -17,7 +17,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
-import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.sl_trip_planner.data.JSONparser;
@@ -25,8 +24,6 @@ import com.example.sl_trip_planner.data.JourneyList;
 import com.example.sl_trip_planner.data.JourneyModel;
 import com.example.sl_trip_planner.recyclerview.JourneyAdapter;
 import com.example.sl_trip_planner.recyclerview.JourneyRecycler;
-
-import org.json.JSONArray;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,6 +42,7 @@ public class ActivityTripList extends AppCompatActivity {
 
     /*-------- HOOKS -------*/
     private RecyclerView recyclerView;
+    private TextView from_to_TV;
 
     /*------- DATA ---------*/
     public int originId, destinationId;
@@ -54,6 +52,7 @@ public class ActivityTripList extends AppCompatActivity {
         //check network connection
         @Override
         public void run() {
+            from_to_TV.setText(R.string.loading_data);
             ConnectivityManager connectivityManager = (ConnectivityManager) getApplication()
                     .getApplicationContext()
                     .getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -61,9 +60,6 @@ public class ActivityTripList extends AppCompatActivity {
             isConnected = activeNetwork != null && activeNetwork.isConnectedOrConnecting();
             Log.i(LOG_TAG, "isConnected? " + isConnected);
 
-            // inform user of internet connection
-            //if (isConnected) textViewNet.setText(R.string.net);
-            //else textViewNet.setText(R.string.nonet);
 
             if (isConnected) {
                 postVolleyRequest();
@@ -83,16 +79,12 @@ public class ActivityTripList extends AppCompatActivity {
 
         /*---------- HOOKS ------------*/
         recyclerView = findViewById(R.id.recyclerView);
+        from_to_TV = findViewById(R.id.from_to);
 
         /*-------- VOLLEY & DATA ---------*/
         mRequestQueue = Volley.newRequestQueue(this);
         parser = new JSONparser();
         journeyList = JourneyList.getInstance();
-
-        /*-------- LISTENERS ----------*/
-
-
-
 
     }
 
@@ -111,8 +103,7 @@ public class ActivityTripList extends AppCompatActivity {
 
     public void postVolleyRequest() {
         Log.i(LOG_TAG, "postvolleyrequest entered");
-        // TODO ad parameters from intent here
-        String mUrl = parser.setUrl(originId, destinationId);
+        String mUrl = parser.setTripUrl(originId, destinationId);
             // get data
             JsonObjectRequest tripRequest = new JsonObjectRequest(Request.Method.GET,
                     mUrl,
@@ -124,8 +115,12 @@ public class ActivityTripList extends AppCompatActivity {
                                 journeyList.clear();
                                 journeyList.addAll(newJourney);
                             } else journeyList = newJourney;
-                            // weather displayed in app + serialization
+
                             fillRecyclerView(journeyList);
+
+                            String origin = journeyList.get(0).getOrigin();
+                            String destination = journeyList.get(0).getDestination();
+                            from_to_TV.setText(origin + " -> " + destination);
                             Toast.makeText(getApplicationContext(), "Download completed", Toast.LENGTH_SHORT).show();
 
                         } catch (Exception e) {
@@ -145,7 +140,8 @@ public class ActivityTripList extends AppCompatActivity {
             String destination = instantJourney.getDestination();
             String departureTime = instantJourney.getDepartureTime();
             String arrivalTime = instantJourney.getArrivalTime();
-            itemList.add(new JourneyRecycler(origin, destination, departureTime, arrivalTime));
+            ArrayList<String> transportList = instantJourney.getTransportList();
+            itemList.add(new JourneyRecycler(origin, destination, departureTime, arrivalTime, transportList));
         }
         RecyclerView.Adapter<JourneyAdapter.ViewHolder> adapter = new JourneyAdapter(itemList);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);

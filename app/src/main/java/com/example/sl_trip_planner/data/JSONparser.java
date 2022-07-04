@@ -22,7 +22,14 @@ public class JSONparser {
             NAME = "name",
             TIME = "time";
 
-    public String setUrl(int originId, int destinationId) {
+    public String setSearchUrl(int stopId) {
+        String ApiKey = ApiKeys.API_KEY_stops;
+        String url = "https://api.sl.se/api2/typeahead.json?key=" + ApiKey + "&searchstring=" + stopId;
+        return url;
+    }
+
+
+    public String setTripUrl(int originId, int destinationId) {
         String ApiKey = ApiKeys.API_KEY_trip_planner;
         String url = "https://api.sl.se/api2/TravelplannerV3_1/trip.json?key=" + ApiKey + "&originExtId=" + originId + "&destExtId=" + destinationId;
         return url;

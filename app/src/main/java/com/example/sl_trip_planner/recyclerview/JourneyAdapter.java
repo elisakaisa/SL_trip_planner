@@ -17,7 +17,8 @@ public class JourneyAdapter extends RecyclerView.Adapter<JourneyAdapter.ViewHold
     private ArrayList<JourneyList> mJourney;
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        public TextView originTV, destinationTV, departureTimeTV, arrivalTimeTV;
+        public TextView originTV, destinationTV, departureTimeTV, arrivalTimeTV,
+                        transportListTV, stopListTV;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -25,6 +26,8 @@ public class JourneyAdapter extends RecyclerView.Adapter<JourneyAdapter.ViewHold
             destinationTV = itemView.findViewById(R.id.destination_text);
             arrivalTimeTV = itemView.findViewById(R.id.arrival_time_text);
             departureTimeTV = itemView.findViewById(R.id.departure_time_text);
+            transportListTV = itemView.findViewById(R.id.transport_list);
+            stopListTV = itemView.findViewById(R.id.stop_list);
         }
     }
     // initialize dataset of the adapter
@@ -45,10 +48,11 @@ public class JourneyAdapter extends RecyclerView.Adapter<JourneyAdapter.ViewHold
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         // get elements from dataset & replace the contents of the view with that element
         JourneyRecycler currentJourney = (JourneyRecycler) mJourney.get(position);
-        holder.originTV.setText(currentJourney.getTextOrigin());
-        holder.destinationTV.setText(currentJourney.getTextDestination());
+        //holder.originTV.setText(currentJourney.getTextOrigin());
+        //holder.destinationTV.setText(currentJourney.getTextDestination());
         holder.departureTimeTV.setText(currentJourney.getTextDepartureTime());
         holder.arrivalTimeTV.setText(currentJourney.getTextArrivalTime());
+        holder.transportListTV.setText(currentJourney.getTextTransportList());
     }
 
     // return size of dataset (invoked by layout manager)
