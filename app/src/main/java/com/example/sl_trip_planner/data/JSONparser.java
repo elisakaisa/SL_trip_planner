@@ -31,7 +31,7 @@ public class JSONparser {
 
     public String setTripUrl(int originId, int destinationId) {
         String ApiKey = ApiKeys.API_KEY_trip_planner;
-        String url = "https://api.sl.se/api2/TravelplannerV3_1/trip.json?key=" + ApiKey + "&originExtId=" + originId + "&destExtId=" + destinationId;
+        String url = "https://api.sl.se/api2/TravelplannerV3_1/trip.json?key=" + ApiKey + "&originId=" + originId + "&destId=" + destinationId;
         return url;
     }
 
