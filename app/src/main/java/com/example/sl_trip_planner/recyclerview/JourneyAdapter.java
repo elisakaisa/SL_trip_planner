@@ -22,8 +22,6 @@ public class JourneyAdapter extends RecyclerView.Adapter<JourneyAdapter.ViewHold
 
         public ViewHolder(View itemView) {
             super(itemView);
-            originTV = itemView.findViewById(R.id.origin_text);
-            destinationTV = itemView.findViewById(R.id.destination_text);
             arrivalTimeTV = itemView.findViewById(R.id.arrival_time_text);
             departureTimeTV = itemView.findViewById(R.id.departure_time_text);
             transportListTV = itemView.findViewById(R.id.transport_list);
@@ -53,6 +51,7 @@ public class JourneyAdapter extends RecyclerView.Adapter<JourneyAdapter.ViewHold
         holder.departureTimeTV.setText(currentJourney.getTextDepartureTime());
         holder.arrivalTimeTV.setText(currentJourney.getTextArrivalTime());
         holder.transportListTV.setText(currentJourney.getTextTransportList());
+        holder.stopListTV.setText(currentJourney.getTextStopList());
     }
 
     // return size of dataset (invoked by layout manager)

@@ -5,17 +5,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
-import android.widget.EditText;
 
-import com.example.sl_trip_planner.data.StopIds;
+import com.example.sl_trip_planner.data.Stops;
 
 public class ActivityHome extends AppCompatActivity {
-
-    public static String ORIGIN_ID = "Origin ID";
-    public static String DESTINATION_ID = "Destination ID";
-    private final String Flemingsberg = "Flemingsberg", StockholmCity = "Stockholm City",
-            Huddinge = "Huddinge", Sodertalje = "Södertälje", Gustav = "Gustav Adolfsvägen",
-            Saltskog = "Saltskogs centrum";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,11 +26,11 @@ public class ActivityHome extends AppCompatActivity {
 
         /*-------- LISTENERS ----------*/
         anyTripBtn.setOnClickListener(v -> startActivity(new Intent(this, ActivityStopSearch.class)));
-        setButton(button1, Flemingsberg, Sodertalje, StopIds.FLEMINGSBERG, StopIds.SODERTALJE);
-        setButton(button2, Flemingsberg, StockholmCity, StopIds.FLEMINGSBERG, StopIds.STOCKHOLM_CITY);
-        setButton(button3, Gustav, Saltskog, StopIds.GUSTAV, StopIds.SALTSKOG);
-        setButton(button4, StockholmCity, Flemingsberg, StopIds.STOCKHOLM_CITY, StopIds.FLEMINGSBERG);
-        setButton(button5, Saltskog, Gustav, StopIds.SALTSKOG, StopIds.GUSTAV);
+        setButton(button1, Stops.Flem, Stops.Sod, Stops.FLEM, Stops.SOD);
+        setButton(button2, Stops.Flem, Stops.SthlmC, Stops.FLEM, Stops.STHLMC);
+        setButton(button3, Stops.Gustav, Stops.Sskog, Stops.GUSTAV, Stops.SSKOG);
+        setButton(button4, Stops.SthlmC, Stops.Flem, Stops.STHLMC, Stops.FLEM);
+        setButton(button5, Stops.Sskog, Stops.Gustav, Stops.SSKOG, Stops.GUSTAV);
     }
 
     public void setButton(Button button, String origin, String destination, int originId, int destinationId) {
@@ -49,8 +42,8 @@ public class ActivityHome extends AppCompatActivity {
     public void searchJourneys(int origin, int destination) {
         // todo add input from date & time
         Intent intent = new Intent(this, ActivityTripList.class);
-        intent.putExtra(ORIGIN_ID, origin);
-        intent.putExtra(DESTINATION_ID, destination);
+        intent.putExtra(Stops.ORIGIN_ID, origin);
+        intent.putExtra(Stops.DESTINATION_ID, destination);
         startActivity(intent);
     }
 }

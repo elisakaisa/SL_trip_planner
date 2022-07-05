@@ -23,17 +23,17 @@ import com.android.volley.toolbox.Volley;
 import com.example.sl_trip_planner.data.JSONparser;
 import com.example.sl_trip_planner.data.StopList;
 import com.example.sl_trip_planner.data.StopModel;
+import com.example.sl_trip_planner.data.Stops;
 import com.example.sl_trip_planner.recyclerview.StopAdapter;
 import com.example.sl_trip_planner.recyclerview.StopRecycler;
 import com.example.sl_trip_planner.recyclerview.StopRecyclerViewInterface;
+import com.example.sl_trip_planner.utils.AlertDial;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class ActivityStopSearch extends AppCompatActivity implements StopRecyclerViewInterface {
 
-    public static String ORIGIN_ID = "Origin ID";
-    public static String DESTINATION_ID = "Destination ID";
     String LOG_TAG = ActivityStopSearch.class.getSimpleName();
 
     // Volley & data
@@ -50,22 +50,23 @@ public class ActivityStopSearch extends AppCompatActivity implements StopRecycle
     private Button btn_go;
 
     private String originText;
-    private int originId;
+    private int originId = -1;
     private String destinationText;
-    private int destinationId;
+    private int destinationId = -1;
     boolean start = true;
 
+    //check network connection
     // runs in onStart
-    private final Runnable timerRunnable = new Runnable() {
-        //check network connection
-        @Override
-        public void run() {
-            ConnectivityManager connectivityManager = (ConnectivityManager) getApplication()
-                    .getApplicationContext()
-                    .getSystemService(Context.CONNECTIVITY_SERVICE);
-            NetworkInfo activeNetwork = connectivityManager.getActiveNetworkInfo();
-            boolean isConnected = activeNetwork != null && activeNetwork.isConnectedOrConnecting();
-            Log.i(LOG_TAG, "isConnected? " + isConnected);
+    private final Runnable timerRunnable = () -> {
+        ConnectivityManager connectivityManager = (ConnectivityManager) getApplication()
+                .getApplicationContext()
+                .getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetwork = connectivityManager.getActiveNetworkInfo();
+        boolean isConnected = activeNetwork != null && activeNetwork.isConnectedOrConnecting();
+        Log.i(LOG_TAG, "isConnected? " + isConnected);
+
+        if (!isConnected) {
+            new AlertDial().createMsgDialog(ActivityStopSearch.this, "No internet connection", "Please turn on internet connection").show();
         }
     };
 
@@ -89,8 +90,13 @@ public class ActivityStopSearch extends AppCompatActivity implements StopRecycle
         search(destinationSV, false);
 
         /*-------- LISTENERS ----------*/
-        //TODO: add check that both stations are selcetd
-        btn_go.setOnClickListener(v -> searchJourneys(originId, destinationId));
+        btn_go.setOnClickListener(v -> {
+            if (originId == -1 || destinationId == -1 ) {
+                new AlertDial().createMsgDialog(ActivityStopSearch.this, "Missing input", "Please fill in both origin and destination").show();
+            } else {
+                searchJourneys(originId, destinationId);
+            }
+        });
 
 
     }
@@ -178,13 +184,13 @@ public class ActivityStopSearch extends AppCompatActivity implements StopRecycle
         if (start) {
             originText = stopList.get(position).getStopName();
             originId = stopList.get(position).getStopId();
-            Log.d(LOG_TAG, "stop selected: " + originText + " " + originId);
+            originSV.setQuery(originText, false);
             // todo clear recycler view
-            start = false;
             Toast.makeText(getApplicationContext(), originText + " chosen as start", Toast.LENGTH_SHORT).show();
         } else {
             destinationText = stopList.get(position).getStopName();
             destinationId = stopList.get(position).getStopId();
+            destinationSV.setQuery(destinationText, false);
             Toast.makeText(getApplicationContext(), destinationText + " chosen as destination", Toast.LENGTH_SHORT).show();
         }
 
@@ -194,8 +200,8 @@ public class ActivityStopSearch extends AppCompatActivity implements StopRecycle
     public void searchJourneys(int origin, int destination) {
         // todo add input from date & time
         Intent intent = new Intent(this, ActivityTripList.class);
-        intent.putExtra(ORIGIN_ID, origin);
-        intent.putExtra(DESTINATION_ID, destination);
+        intent.putExtra(Stops.ORIGIN_ID, origin);
+        intent.putExtra(Stops.DESTINATION_ID, destination);
         startActivity(intent);
     }
 }

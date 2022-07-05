@@ -3,10 +3,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@drawable/background">
 
     <LinearLayout
-        android:id="@+id/layout_origin_dest"
+        android:id="@+id/layout_origin"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
@@ -15,22 +16,54 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
+        <TextView
+            android:id="@+id/from"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_weight="1"
+            android:autofillHints="to"
+            android:layout_marginTop="10dp"
+            android:hint="@string/to" />
+
         <SearchView
             android:id="@+id/origin_ET"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="4dp"
+            android:layout_marginEnd="4dp"
+            android:layout_weight="5"
+            android:autofillHints="to"
+            android:hint="@string/to"
+            android:inputType="text" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/layout_destination"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/layout_origin">
+
+        <TextView
+            android:id="@+id/to"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
             android:layout_weight="1"
             android:autofillHints="from"
-            android:hint="@string/from"
-            android:inputType="text" />
+            android:layout_marginTop="10dp"
+            android:hint="@string/from" />
 
         <SearchView
             android:id="@+id/destination_ET"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="4dp"
-            android:layout_weight="1"
+            android:layout_weight="5"
             android:autofillHints="to"
             android:hint="@string/to"
             android:inputType="text" />
@@ -45,7 +78,7 @@
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/layout_origin_dest">
+        app:layout_constraintTop_toBottomOf="@+id/layout_destination">
 
         <EditText
             android:id="@+id/time_ET"

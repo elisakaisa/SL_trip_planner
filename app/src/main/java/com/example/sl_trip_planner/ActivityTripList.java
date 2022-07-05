@@ -22,8 +22,10 @@ import com.android.volley.toolbox.Volley;
 import com.example.sl_trip_planner.data.JSONparser;
 import com.example.sl_trip_planner.data.JourneyList;
 import com.example.sl_trip_planner.data.JourneyModel;
+import com.example.sl_trip_planner.data.Stops;
 import com.example.sl_trip_planner.recyclerview.JourneyAdapter;
 import com.example.sl_trip_planner.recyclerview.JourneyRecycler;
+import com.example.sl_trip_planner.utils.AlertDial;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -63,6 +65,8 @@ public class ActivityTripList extends AppCompatActivity {
 
             if (isConnected) {
                 postVolleyRequest();
+            } else {
+                new AlertDial().createMsgDialog(ActivityTripList.this, "No internet connection", "Please turn on internet connection").show();
             }
         }
     };
@@ -74,8 +78,8 @@ public class ActivityTripList extends AppCompatActivity {
 
         /*-------- INTENT -----------*/
         Intent intent = getIntent();
-        originId = intent.getIntExtra(ActivityHome.ORIGIN_ID, 0);
-        destinationId = intent.getIntExtra(ActivityHome.DESTINATION_ID, 0);
+        originId = intent.getIntExtra(Stops.ORIGIN_ID, 0);
+        destinationId = intent.getIntExtra(Stops.DESTINATION_ID, 0);
 
         /*---------- HOOKS ------------*/
         recyclerView = findViewById(R.id.recyclerView);
@@ -141,7 +145,8 @@ public class ActivityTripList extends AppCompatActivity {
             String departureTime = instantJourney.getDepartureTime();
             String arrivalTime = instantJourney.getArrivalTime();
             ArrayList<String> transportList = instantJourney.getTransportList();
-            itemList.add(new JourneyRecycler(origin, destination, departureTime, arrivalTime, transportList));
+            ArrayList<String> stopList = instantJourney.getStopList();
+            itemList.add(new JourneyRecycler(origin, destination, departureTime, arrivalTime, transportList, stopList));
         }
         RecyclerView.Adapter<JourneyAdapter.ViewHolder> adapter = new JourneyAdapter(itemList);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);

@@ -2,7 +2,9 @@ package com.example.sl_trip_planner.data;
 
 import android.util.Log;
 
+import com.example.sl_trip_planner.ActivityStopSearch;
 import com.example.sl_trip_planner.BuildConfig;
+import com.example.sl_trip_planner.utils.AlertDial;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -50,7 +52,9 @@ public class JSONparser {
             //stopData.add(instantStop);
         }
 
-        //instantStop.setStopArrayList(stopArrayList);
+        if (responseData.length() == 0) {
+            //new AlertDial().createMsgDialog(getContext(), "No internet connection", "Please turn on internet connection").show();
+        }
         return stopData;
     }
 
