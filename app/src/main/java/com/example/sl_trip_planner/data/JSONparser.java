@@ -25,7 +25,7 @@ public class JSONparser {
     public String setSearchUrl(String stopName) {
         String ApiKey = ApiKeys.API_KEY_stops;
         // for testing
-        stopName = "stockholm";
+        //stopName = "stockholm";
         String url = "https://api.sl.se/api2/typeahead.json?key=" + ApiKey + "&searchstring=" + stopName;
         return url;
     }
@@ -45,7 +45,7 @@ public class JSONparser {
             String name = details.getString("Name");
             String siteId = details.getString("SiteId");
             instantStop.setStopName(name);
-            instantStop.setStopId(siteId);
+            instantStop.setStopId(Integer.parseInt(siteId));
             stopArrayList.add(name);
             //stopData.add(instantStop);
         }

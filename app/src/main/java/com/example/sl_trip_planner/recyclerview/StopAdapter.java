@@ -15,16 +15,34 @@ import java.util.ArrayList;
 
 public class StopAdapter extends RecyclerView.Adapter<StopAdapter.ViewHolder>{
     private ArrayList<StopList> mStops;
+    private final StopRecyclerViewInterface mRecyclerViewInterface;
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         public TextView stopNameTV;
 
-        public ViewHolder(View itemView) {
+        public ViewHolder(View itemView, StopRecyclerViewInterface mRecyclerViewInterface) {
             super(itemView);
             stopNameTV = itemView.findViewById(R.id.stopName);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (mRecyclerViewInterface != null) {
+                        int position = getAdapterPosition();
+                        if (position != RecyclerView.NO_POSITION){
+                            mRecyclerViewInterface.onItemClick(position);
+                        }
+                    }
+                }
+            });
         }
     }
-    public StopAdapter(ArrayList<StopList> stopItemsList) { mStops = stopItemsList; }
+
+    //constructor
+    public StopAdapter(ArrayList<StopList> stopItemsList, StopRecyclerViewInterface mRecyclerViewInterface) {
+        this.mStops = stopItemsList;
+        this.mRecyclerViewInterface = mRecyclerViewInterface;
+    }
 
     @NonNull
     @Override
@@ -32,7 +50,7 @@ public class StopAdapter extends RecyclerView.Adapter<StopAdapter.ViewHolder>{
         // create a new item view
         View itemView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.stop_item, parent, false);
-        return new StopAdapter.ViewHolder(itemView);
+        return new StopAdapter.ViewHolder(itemView, mRecyclerViewInterface);
     }
 
     @Override
