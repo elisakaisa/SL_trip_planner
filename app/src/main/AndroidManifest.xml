@@ -20,6 +20,9 @@
             android:name=".ActivityTripList"
             android:exported="false" />
         <activity
+            android:name=".ActivityStopSearch"
+            android:exported="false" />
+        <activity
             android:name=".ActivityHome"
             android:exported="true">
             <intent-filter>

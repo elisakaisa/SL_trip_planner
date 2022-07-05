@@ -23,6 +23,7 @@ public class ActivityHome extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         /*---------- HOOKS ------------*/
+        Button anyTripBtn = findViewById(R.id.button_any);
         Button button1 = findViewById(R.id.button);
         Button button2 = findViewById(R.id.button2);
         Button button3 = findViewById(R.id.button3);
@@ -31,6 +32,7 @@ public class ActivityHome extends AppCompatActivity {
 
 
         /*-------- LISTENERS ----------*/
+        anyTripBtn.setOnClickListener(v -> startActivity(new Intent(this, ActivityStopSearch.class)));
         setButton(button1, Flemingsberg, Sodertalje, StopIds.FLEMINGSBERG, StopIds.SODERTALJE);
         setButton(button2, Flemingsberg, StockholmCity, StopIds.FLEMINGSBERG, StopIds.STOCKHOLM_CITY);
         setButton(button3, Gustav, Saltskog, StopIds.GUSTAV, StopIds.SALTSKOG);

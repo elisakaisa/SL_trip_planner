@@ -22,10 +22,29 @@ public class JSONparser {
             NAME = "name",
             TIME = "time";
 
-    public String setSearchUrl(int stopId) {
+    public String setSearchUrl(String stopName) {
         String ApiKey = ApiKeys.API_KEY_stops;
-        String url = "https://api.sl.se/api2/typeahead.json?key=" + ApiKey + "&searchstring=" + stopId;
+        // for testing
+        stopName = "stockholm";
+        String url = "https://api.sl.se/api2/typeahead.json?key=" + ApiKey + "&searchstring=" + stopName;
         return url;
+    }
+
+    public List<StopModel> getStops(JSONObject stopObj) throws JSONException {
+        List <StopModel> stopData = new ArrayList<>();
+        StopModel instantStop = new StopModel();
+        JSONArray responseData = stopObj.getJSONArray("ResponseData");
+        for (int i = 0; i < responseData.length(); i++) {
+            JSONObject details = responseData.getJSONObject(i);
+
+            stopData.add(instantStop);
+
+            String name = details.getString("Name");
+            String siteId = details.getString("SiteId");
+            instantStop.setStopName(name);
+            instantStop.setStopId(siteId);
+        }
+        return stopData;
     }
 
 
