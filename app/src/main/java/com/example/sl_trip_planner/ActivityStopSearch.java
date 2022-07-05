@@ -6,10 +6,12 @@ import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
+import android.widget.LinearLayout;
 import android.widget.SearchView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -17,11 +19,12 @@ import com.android.volley.Response;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.sl_trip_planner.data.JSONparser;
-import com.example.sl_trip_planner.data.JourneyList;
-import com.example.sl_trip_planner.data.JourneyModel;
 import com.example.sl_trip_planner.data.StopList;
 import com.example.sl_trip_planner.data.StopModel;
+import com.example.sl_trip_planner.recyclerview.StopAdapter;
+import com.example.sl_trip_planner.recyclerview.StopRecycler;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ActivityStopSearch extends AppCompatActivity {
@@ -33,9 +36,11 @@ public class ActivityStopSearch extends AppCompatActivity {
     private List<StopModel> stopList;
     private final Handler timerHandler = new Handler();
     private JSONparser parser;
+    private ArrayList<String> stopArrayList = new ArrayList<>();
 
     private String currentSearchText = "";
     private SearchView originSV;
+    private RecyclerView stopsRV;
 
     // runs in onStart
     private final Runnable timerRunnable = new Runnable() {
@@ -63,6 +68,7 @@ public class ActivityStopSearch extends AppCompatActivity {
 
         /*------------ HOOKS --------------*/
         originSV = findViewById(R.id.origin_ET);
+        stopsRV = findViewById(R.id.list_view);
 
         /*-------- VOLLEY & DATA ---------*/
         mRequestQueue = Volley.newRequestQueue(this);
@@ -70,7 +76,6 @@ public class ActivityStopSearch extends AppCompatActivity {
         stopList = StopList.getInstance();
 
         search();
-
 
     }
 
@@ -107,6 +112,20 @@ public class ActivityStopSearch extends AppCompatActivity {
         });
     }
 
+    public void fillRecyclerView(List<StopModel> stopData) {
+        ArrayList<StopList> itemList = new ArrayList<>();
+        for (StopModel instantStop : stopData) {
+            String stop = instantStop.getStopName();
+            itemList.add(new StopRecycler(stop));
+        }
+        RecyclerView.Adapter<StopAdapter.ViewHolder> adapter = new StopAdapter(itemList);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
+        stopsRV.setLayoutManager(layoutManager);
+        stopsRV.setAdapter(adapter);
+        adapter.notifyDataSetChanged();
+    }
+
+
     public void postVolleyRequest(String searchKeys) {
         Log.i(LOG_TAG, "postvolleyrequest entered");
         String mUrl = parser.setSearchUrl(searchKeys);
@@ -122,9 +141,7 @@ public class ActivityStopSearch extends AppCompatActivity {
                             stopList.addAll(newStops);
                         } else stopList = newStops;
 
-                        Log.i(LOG_TAG, String.valueOf(stopList));
-                        //fillRecyclerView(journeyList);
-                        //Toast.makeText(getApplicationContext(), "Download completed", Toast.LENGTH_SHORT).show();
+                        fillRecyclerView(stopList);
 
                     } catch (Exception e) {
                         Log.i("error whilst parsing", e.toString());

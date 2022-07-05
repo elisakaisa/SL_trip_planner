@@ -32,18 +32,25 @@ public class JSONparser {
 
     public List<StopModel> getStops(JSONObject stopObj) throws JSONException {
         List <StopModel> stopData = new ArrayList<>();
-        StopModel instantStop = new StopModel();
+
         JSONArray responseData = stopObj.getJSONArray("ResponseData");
+        ArrayList<String> stopArrayList = new ArrayList<>();
+        //stopData.add(instantStop);
         for (int i = 0; i < responseData.length(); i++) {
             JSONObject details = responseData.getJSONObject(i);
 
+            StopModel instantStop = new StopModel();
             stopData.add(instantStop);
 
             String name = details.getString("Name");
             String siteId = details.getString("SiteId");
             instantStop.setStopName(name);
             instantStop.setStopId(siteId);
+            stopArrayList.add(name);
+            //stopData.add(instantStop);
         }
+
+        //instantStop.setStopArrayList(stopArrayList);
         return stopData;
     }
 

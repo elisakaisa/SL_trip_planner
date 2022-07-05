@@ -37,7 +37,7 @@ public class JourneyAdapter extends RecyclerView.Adapter<JourneyAdapter.ViewHold
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        // create a new item view todo fix correct layout
+        // create a new item view
         View itemView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.journey_item, parent, false);
         return new ViewHolder(itemView);
