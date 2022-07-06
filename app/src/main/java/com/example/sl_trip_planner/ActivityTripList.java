@@ -37,8 +37,6 @@ public class ActivityTripList extends AppCompatActivity {
     private RequestQueue mRequestQueue;
     private List<JourneyModel> journeyList;
 
-    // Networking
-    private static boolean isConnected;
     private final Handler timerHandler = new Handler();
     private JSONparser parser;
 
@@ -48,6 +46,7 @@ public class ActivityTripList extends AppCompatActivity {
 
     /*------- DATA ---------*/
     public int originId, destinationId;
+    public String time, date;
 
     // runs in onStart
     private final Runnable timerRunnable = new Runnable() {
@@ -59,7 +58,8 @@ public class ActivityTripList extends AppCompatActivity {
                     .getApplicationContext()
                     .getSystemService(Context.CONNECTIVITY_SERVICE);
             NetworkInfo activeNetwork = connectivityManager.getActiveNetworkInfo();
-            isConnected = activeNetwork != null && activeNetwork.isConnectedOrConnecting();
+            // Networking
+            boolean isConnected = activeNetwork != null && activeNetwork.isConnectedOrConnecting();
             Log.i(LOG_TAG, "isConnected? " + isConnected);
 
 
@@ -80,6 +80,8 @@ public class ActivityTripList extends AppCompatActivity {
         Intent intent = getIntent();
         originId = intent.getIntExtra(Stops.ORIGIN_ID, 0);
         destinationId = intent.getIntExtra(Stops.DESTINATION_ID, 0);
+        time = intent.getStringExtra(Stops.TIME);
+        date = intent.getStringExtra(Stops.DATE);
 
         /*---------- HOOKS ------------*/
         recyclerView = findViewById(R.id.recyclerView);
@@ -107,7 +109,7 @@ public class ActivityTripList extends AppCompatActivity {
 
     public void postVolleyRequest() {
         Log.i(LOG_TAG, "postvolleyrequest entered");
-        String mUrl = parser.setTripUrl(originId, destinationId);
+        String mUrl = parser.setTripUrl(originId, destinationId, time, date);
             // get data
             JsonObjectRequest tripRequest = new JsonObjectRequest(Request.Method.GET,
                     mUrl,
@@ -158,6 +160,6 @@ public class ActivityTripList extends AppCompatActivity {
 
     private final Response.ErrorListener errorListener = error -> {
         Log.i("Volley error", error.toString());
-        //createMsgDialog("Network error", "Couldn't download the data").show();
+        new AlertDial().createMsgDialog(ActivityTripList.this, "Network error", "Couldn't download data").show();
     };
 }

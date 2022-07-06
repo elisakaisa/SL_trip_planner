@@ -1,16 +1,24 @@
 package com.example.sl_trip_planner;
 
+import android.annotation.SuppressLint;
+import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.icu.util.Calendar;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.SearchView;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -41,17 +49,13 @@ public class ActivityStopSearch extends AppCompatActivity implements StopRecycle
     private List<StopModel> stopList;
     private final Handler timerHandler = new Handler();
     private JSONparser parser;
-    private ArrayList<String> stopArrayList = new ArrayList<>();
 
-    private String currentSearchText = "";
     private SearchView originSV;
     private SearchView destinationSV;
     private RecyclerView stopsRV;
-    private Button btn_go;
+    private TextView timeET, dateET;
 
-    private String originText;
     private int originId = -1;
-    private String destinationText;
     private int destinationId = -1;
     boolean start = true;
 
@@ -70,6 +74,7 @@ public class ActivityStopSearch extends AppCompatActivity implements StopRecycle
         }
     };
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -79,7 +84,9 @@ public class ActivityStopSearch extends AppCompatActivity implements StopRecycle
         originSV = findViewById(R.id.origin_ET);
         destinationSV = findViewById(R.id.destination_ET);
         stopsRV = findViewById(R.id.list_view);
-        btn_go = findViewById(R.id.btn_go);
+        Button btn_go = findViewById(R.id.btn_go);
+        timeET = findViewById(R.id.time_ET);
+        dateET = findViewById(R.id.date_ET);
 
         /*-------- VOLLEY & DATA ---------*/
         mRequestQueue = Volley.newRequestQueue(this);
@@ -91,12 +98,12 @@ public class ActivityStopSearch extends AppCompatActivity implements StopRecycle
 
         /*-------- LISTENERS ----------*/
         btn_go.setOnClickListener(v -> {
-            if (originId == -1 || destinationId == -1 ) {
-                new AlertDial().createMsgDialog(ActivityStopSearch.this, "Missing input", "Please fill in both origin and destination").show();
-            } else {
-                searchJourneys(originId, destinationId);
-            }
+            String date = String.valueOf(dateET.getText());
+            String time = String.valueOf(timeET.getText());
+            searchJourneys(originId, destinationId, time, date);
         });
+        timeET.setOnClickListener(v -> timePickerDialog());
+        dateET.setOnClickListener(v -> datePickerDialog());
 
 
     }
@@ -123,7 +130,6 @@ public class ActivityStopSearch extends AppCompatActivity implements StopRecycle
             @Override
             public boolean onQueryTextChange(String s) {
                 start = search;
-                currentSearchText = s;
                 Log.i(LOG_TAG, s);
                 if (s.length() > 7) {
                     postVolleyRequest(s);
@@ -182,26 +188,67 @@ public class ActivityStopSearch extends AppCompatActivity implements StopRecycle
     @Override
     public void onItemClick(int position) {
         if (start) {
-            originText = stopList.get(position).getStopName();
+            String originText = stopList.get(position).getStopName();
             originId = stopList.get(position).getStopId();
             originSV.setQuery(originText, false);
-            // todo clear recycler view
             Toast.makeText(getApplicationContext(), originText + " chosen as start", Toast.LENGTH_SHORT).show();
         } else {
-            destinationText = stopList.get(position).getStopName();
+            String destinationText = stopList.get(position).getStopName();
             destinationId = stopList.get(position).getStopId();
             destinationSV.setQuery(destinationText, false);
             Toast.makeText(getApplicationContext(), destinationText + " chosen as destination", Toast.LENGTH_SHORT).show();
         }
-
-        Log.d(LOG_TAG, "origin: " + originText + " destinatiom" + destinationText);
     }
 
-    public void searchJourneys(int origin, int destination) {
-        // todo add input from date & time
-        Intent intent = new Intent(this, ActivityTripList.class);
-        intent.putExtra(Stops.ORIGIN_ID, origin);
-        intent.putExtra(Stops.DESTINATION_ID, destination);
-        startActivity(intent);
+    public void searchJourneys(int origin, int destination, String time, String date) {
+        if (originId == -1 || destinationId == -1 ) {
+            // check for missing origin and/or destination
+            new AlertDial().createMsgDialog(ActivityStopSearch.this, "Missing input", "Please fill in both origin and destination").show();
+        } else {
+            if ((time.equals("time") && (!date.equals("date")))) {
+                new AlertDial().createMsgDialog(ActivityStopSearch.this, "Missing input", "Please provide a time").show();
+            } else {
+                Intent intent = new Intent(this, ActivityTripList.class);
+                intent.putExtra(Stops.DATE, date);
+                intent.putExtra(Stops.TIME, time);
+                intent.putExtra(Stops.ORIGIN_ID, origin);
+                intent.putExtra(Stops.DESTINATION_ID, destination);
+                startActivity(intent);
+            }
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    private void timePickerDialog() {
+        // opens time picker dialog
+        Calendar mCurrentTime = Calendar.getInstance();
+        int hour = mCurrentTime.get(Calendar.HOUR_OF_DAY);
+        int minute = mCurrentTime.get(Calendar.MINUTE);
+        TimePickerDialog timePickerDialog = new TimePickerDialog(ActivityStopSearch.this, (view, hourOfDay, minuteOfHour) -> {
+            @SuppressLint("DefaultLocale") String time = String.format("%02d:%02d", hourOfDay, minuteOfHour);
+            timeET.setText(time);
+        }, hour, minute, true);//Yes 24 hour time
+        timePickerDialog.show();
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    private void datePickerDialog(){
+        // calender class's instance and get current date , month and year from calender
+        final Calendar calendar = Calendar.getInstance();
+        int mYear = calendar.get(Calendar.YEAR);
+        int mMonth = calendar.get(Calendar.MONTH); // ADD +1 to get actual month!!!
+        int mDay = calendar.get(Calendar.DAY_OF_MONTH);
+        DatePickerDialog datePickerDialog = new DatePickerDialog(ActivityStopSearch.this,
+                (view, year, month, day) -> {
+                    String sMonth = String.valueOf(month + 1);
+                    String sDay = String.valueOf(day);
+                    // set day of month , month and year value in the edit text
+                    if ((month + 1) < 10) { sMonth = "0" + (month + 1); }
+                    if (day < 10) { sDay = "0" + day; }
+                    String date = year + "-"  + sMonth + "-" + sDay;
+                    dateET.setText(date);
+                }, mYear, mMonth, mDay);
+        datePickerDialog.getDatePicker().setFirstDayOfWeek(Calendar.MONDAY);
+        datePickerDialog.show();
     }
 }

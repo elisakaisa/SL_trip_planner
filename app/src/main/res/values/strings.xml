@@ -4,4 +4,6 @@
     <string name="to">to</string>
     <string name="from">from</string>
     <string name="go">GO</string>
+    <string name="time">time</string>
+    <string name="date">date</string>
 </resources>

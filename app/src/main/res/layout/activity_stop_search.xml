@@ -18,13 +18,14 @@
 
         <TextView
             android:id="@+id/from"
+            android:text="@string/from"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_weight="1"
             android:autofillHints="to"
             android:layout_marginTop="10dp"
-            android:hint="@string/to" />
+            android:hint="@string/from" />
 
         <SearchView
             android:id="@+id/origin_ET"
@@ -32,8 +33,8 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="4dp"
             android:layout_weight="5"
-            android:autofillHints="to"
-            android:hint="@string/to"
+            android:autofillHints="from"
+            android:hint="@string/from"
             android:inputType="text" />
 
     </LinearLayout>
@@ -50,13 +51,14 @@
 
         <TextView
             android:id="@+id/to"
+            android:text="@string/to"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_weight="1"
-            android:autofillHints="from"
+            android:autofillHints="to"
             android:layout_marginTop="10dp"
-            android:hint="@string/from" />
+            android:hint="@string/to" />
 
         <SearchView
             android:id="@+id/destination_ET"
@@ -80,23 +82,25 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/layout_destination">
 
-        <EditText
+        <TextView
             android:id="@+id/time_ET"
+            android:text="@string/time"
+            android:textAlignment="center"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="4dp"
             android:layout_weight="1"
-            android:autofillHints="time"
-            android:inputType="time" />
+            android:autofillHints="time" />
 
-        <EditText
+        <TextView
             android:id="@+id/date_ET"
+            android:text="@string/date"
+            android:textAlignment="center"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="4dp"
             android:layout_weight="1"
-            android:autofillHints="date"
-            android:inputType="date" />
+            android:autofillHints="date" />
 
     </LinearLayout>
 

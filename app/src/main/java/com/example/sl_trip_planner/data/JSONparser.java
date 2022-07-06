@@ -17,8 +17,8 @@ import java.util.List;
 public class JSONparser {
     String LOG_TAG = JSONparser.class.getSimpleName();
     private static final String
-            ORIGIN = "origin",
-            DESTINATION = "destination",
+            ORIGIN = "Origin",
+            DESTINATION = "Destination",
             DEPARTURE_TIME = "departure time",
             ARRIVAL_TIME = "arrival time",
             NAME = "name",
@@ -26,8 +26,6 @@ public class JSONparser {
 
     public String setSearchUrl(String stopName) {
         String ApiKey = ApiKeys.API_KEY_stops;
-        // for testing
-        //stopName = "stockholm";
         String url = "https://api.sl.se/api2/typeahead.json?key=" + ApiKey + "&searchstring=" + stopName;
         return url;
     }
@@ -58,10 +56,18 @@ public class JSONparser {
         return stopData;
     }
 
-
-    public String setTripUrl(int originId, int destinationId) {
+    public String setTripUrl(int originId, int destinationId, String time, String date) {
         String ApiKey = ApiKeys.API_KEY_trip_planner;
         String url = "https://api.sl.se/api2/TravelplannerV3_1/trip.json?key=" + ApiKey + "&originId=" + originId + "&destId=" + destinationId;
+        if (!time.equals("time")) {
+            url = "https://api.sl.se/api2/TravelplannerV3_1/trip.json?key=" +
+                    ApiKey + "&originId=" + originId + "&destId=" + destinationId + "&Time=" + time;
+            if (!date.equals("date")) {
+                url = "https://api.sl.se/api2/TravelplannerV3_1/trip.json?key=" +
+                        ApiKey + "&originId=" + originId + "&destId=" + destinationId +
+                        "&Time=" + time + "&Date=" + date;
+            }
+        }
         return url;
     }
 
@@ -95,7 +101,7 @@ public class JSONparser {
                 transportList.add(details2.getString(NAME));
 
                 // Origin
-                JSONObject origin = details2.getJSONObject("Origin");
+                JSONObject origin = details2.getJSONObject(ORIGIN);
                 originNameList.add(origin.getString(NAME));
                 originTimeList.add(origin.getString(TIME));
                 stopList.add(origin.getString(NAME));
@@ -103,7 +109,7 @@ public class JSONparser {
 
 
                 // Destination
-                JSONObject destination = details2.getJSONObject("Destination");
+                JSONObject destination = details2.getJSONObject(DESTINATION);
                 destinationNameList.add(destination.getString(NAME));
                 destinationTimeList.add(destination.getString(TIME));
                 stopList.add(destination.getString(NAME));
