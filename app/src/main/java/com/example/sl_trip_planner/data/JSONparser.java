@@ -1,10 +1,6 @@
 package com.example.sl_trip_planner.data;
 
-import android.util.Log;
-
-import com.example.sl_trip_planner.ActivityStopSearch;
-import com.example.sl_trip_planner.BuildConfig;
-import com.example.sl_trip_planner.utils.AlertDial;
+import com.example.sl_trip_planner.utils.DataProcess;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -16,6 +12,7 @@ import java.util.List;
 
 public class JSONparser {
     String LOG_TAG = JSONparser.class.getSimpleName();
+    private DataProcess cDataProcess;
     private static final String
             ORIGIN = "Origin",
             DESTINATION = "Destination",
@@ -74,19 +71,20 @@ public class JSONparser {
     public List<JourneyModel> getJourney(JSONObject journeyObj) throws JSONException, ParseException {
 
         List<JourneyModel> journeyData = new ArrayList<>();
-        Log.d(LOG_TAG, "parser initialized ");
 
         JSONArray trips = journeyObj.getJSONArray("Trip");
         for (int i = 0; i < trips.length(); i++) {
             // loop through different journey options
             JSONObject details = trips.getJSONObject(i);
             JSONObject legList = details.getJSONObject("LegList");
-            Log.i(LOG_TAG, String.valueOf(legList));
             JSONArray leg = legList.getJSONArray("Leg");
 
+            /*------------ INIT -----------------*/
+            cDataProcess = new DataProcess();
             JourneyModel instantJourney = new JourneyModel();
             journeyData.add(instantJourney);
 
+            /* ------- INIT ARRAYLISTS -----------*/
             ArrayList<String> originNameList = new ArrayList<>();
             ArrayList<String> destinationNameList = new ArrayList<>();
             ArrayList<String> originTimeList = new ArrayList<>();
@@ -94,6 +92,8 @@ public class JSONparser {
             ArrayList<String> stopList = new ArrayList<>();
             ArrayList<String> timeList = new ArrayList<>();
             ArrayList<String> transportList = new ArrayList<>();
+            ArrayList<String> timeTransport = new ArrayList<>();
+            ArrayList<String> stopTransport = new ArrayList<>();
 
             for (int j = 0; j < leg.length(); j++) {
                 JSONObject details2 = leg.getJSONObject(j);
@@ -127,7 +127,16 @@ public class JSONparser {
             instantJourney.setStopList(stopList);
             instantJourney.setTimeList(timeList);
 
+            // DATA PROCESSING
+            cDataProcess.setData(stopList, transportList, timeList);
+            timeTransport = cDataProcess.combineTimeTransport();
+            stopTransport = cDataProcess.combineStopTransport();
+
+            instantJourney.setTimeTransportData(timeTransport);
+            instantJourney.setStopTransportData(stopTransport);
+
         }
+
         return journeyData;
     }
 }

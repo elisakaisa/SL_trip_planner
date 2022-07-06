@@ -147,8 +147,9 @@ public class ActivityTripList extends AppCompatActivity {
             String departureTime = instantJourney.getDepartureTime();
             String arrivalTime = instantJourney.getArrivalTime();
             ArrayList<String> transportList = instantJourney.getTransportList();
-            ArrayList<String> stopList = instantJourney.getStopList();
-            itemList.add(new JourneyRecycler(origin, destination, departureTime, arrivalTime, transportList, stopList));
+            ArrayList<String> timeTransportData = instantJourney.getTimeTransportData();
+            ArrayList<String> stopTransportData = instantJourney.getStopTransportData();
+            itemList.add(new JourneyRecycler(origin, destination, departureTime, arrivalTime, stopTransportData, timeTransportData));
         }
         RecyclerView.Adapter<JourneyAdapter.ViewHolder> adapter = new JourneyAdapter(itemList);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);

@@ -7,18 +7,8 @@ public class JourneyModel {
     private ArrayList<String> mStopList;
     private ArrayList<String> mTimeList;
     private ArrayList<String> mTransportList;
-
-    // constructor todo:see if needed
-    /*
-    public SingleTrial(String name, Integer number, Boolean armChoice,
-                       String notes, LocalDateTime date){
-        this.projectName = name;
-        this.projectNumber = number;
-        this.armChoice = armChoice;
-        this.projectNotes = notes;
-        this.recordingDate = date;
-    }
-     */
+    private ArrayList<String> mTimeTransportData;
+    private ArrayList<String> mStopTransportData;
 
     // set methods
     public void setOrigin(String origin) { mOrigin = origin; }
@@ -28,6 +18,10 @@ public class JourneyModel {
     public void setStopList (ArrayList<String> stopList) {mStopList = stopList; }
     public void setTimeList (ArrayList<String> timeList) {mStopList = timeList; }
     public void setTransportList (ArrayList<String> transportList) {mTransportList = transportList;}
+    public void setTimeTransportData(ArrayList<String> timeTransportData) {
+        mTimeTransportData = timeTransportData;}
+    public void setStopTransportData(ArrayList<String> combinedData) {
+        mStopTransportData = combinedData;}
 
     // get methods
     public String getOrigin() { return mOrigin; }
@@ -37,4 +31,6 @@ public class JourneyModel {
     public ArrayList<String> getStopList() { return mStopList; }
     public ArrayList<String> getTimeList() { return mTimeList; }
     public ArrayList<String> getTransportList() { return mTransportList; }
+    public ArrayList<String> getTimeTransportData() { return mTimeTransportData; }
+    public ArrayList<String> getStopTransportData() { return mStopTransportData; }
 }
