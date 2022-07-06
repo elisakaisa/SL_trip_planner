@@ -42,6 +42,8 @@ public class ActivityHome extends AppCompatActivity {
     public void searchJourneys(int origin, int destination) {
         // todo add input from date & time
         Intent intent = new Intent(this, ActivityTripList.class);
+        intent.putExtra(Stops.TIME, "time");
+        intent.putExtra(Stops.DATE, "date");
         intent.putExtra(Stops.ORIGIN_ID, origin);
         intent.putExtra(Stops.DESTINATION_ID, destination);
         startActivity(intent);
