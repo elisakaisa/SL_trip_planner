@@ -38,6 +38,28 @@ public class DataProcess {
         return mStopTransport;
     }
 
-    public void cleanStops() {
+    public String combinedData() {
+        String outcome = "";
+        for (int i = 0; i < mTransportList.size(); i++) {
+            String oneLine = "";
+            if (!mTransportList.get(i).equals("")) {
+                // Line
+                String line = mTransportList.get(i);
+
+                //from
+                String startTime = mTimeList.get(i*2);
+                String startStop = mStopList.get(i*2);
+
+                // to
+                String stopStop = mStopList.get(i*2+1);
+                String stopTime = mTimeList.get(i*2+1);
+
+                // combine
+                oneLine = line + ": " + startTime + " " + startStop +
+                        " - " + stopTime + " " + stopStop;
+            }
+            outcome = outcome + oneLine + "\n";
+        }
+        return outcome;
     }
 }

@@ -9,6 +9,7 @@ public class JourneyModel {
     private ArrayList<String> mTransportList;
     private ArrayList<String> mTimeTransportData;
     private ArrayList<String> mStopTransportData;
+    private String mCombinedData;
 
     // set methods
     public void setOrigin(String origin) { mOrigin = origin; }
@@ -20,8 +21,11 @@ public class JourneyModel {
     public void setTransportList (ArrayList<String> transportList) {mTransportList = transportList;}
     public void setTimeTransportData(ArrayList<String> timeTransportData) {
         mTimeTransportData = timeTransportData;}
-    public void setStopTransportData(ArrayList<String> combinedData) {
-        mStopTransportData = combinedData;}
+    public void setStopTransportData(ArrayList<String> stopTransportData) {
+        mStopTransportData = stopTransportData;}
+    public void setCombinedData(String combinedData) {
+        mCombinedData = combinedData;
+    }
 
     // get methods
     public String getOrigin() { return mOrigin; }
@@ -33,4 +37,5 @@ public class JourneyModel {
     public ArrayList<String> getTransportList() { return mTransportList; }
     public ArrayList<String> getTimeTransportData() { return mTimeTransportData; }
     public ArrayList<String> getStopTransportData() { return mStopTransportData; }
+    public String getCombinedData() { return mCombinedData; }
 }

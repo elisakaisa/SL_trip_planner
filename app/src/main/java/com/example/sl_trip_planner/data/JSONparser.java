@@ -131,9 +131,11 @@ public class JSONparser {
             cDataProcess.setData(stopList, transportList, timeList);
             timeTransport = cDataProcess.combineTimeTransport();
             stopTransport = cDataProcess.combineStopTransport();
+            String outcome = cDataProcess.combinedData();
 
             instantJourney.setTimeTransportData(timeTransport);
             instantJourney.setStopTransportData(stopTransport);
+            instantJourney.setCombinedData(outcome);
 
         }
 

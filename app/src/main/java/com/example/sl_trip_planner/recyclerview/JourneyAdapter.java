@@ -50,8 +50,8 @@ public class JourneyAdapter extends RecyclerView.Adapter<JourneyAdapter.ViewHold
         //holder.destinationTV.setText(currentJourney.getTextDestination());
         holder.departureTimeTV.setText(currentJourney.getTextDepartureTime());
         holder.arrivalTimeTV.setText(currentJourney.getTextArrivalTime());
-        holder.transportListTV.setText(currentJourney.getTextStopTransportList());
-        holder.stopListTV.setText(currentJourney.getTextTimeTrabnsportList());
+        holder.transportListTV.setText(currentJourney.getTextCombinedData());
+        //holder.stopListTV.setText(currentJourney.getTextTimeTrabnsportList());
     }
 
     // return size of dataset (invoked by layout manager)
