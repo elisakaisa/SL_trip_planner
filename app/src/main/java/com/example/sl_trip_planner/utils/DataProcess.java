@@ -1,5 +1,12 @@
 package com.example.sl_trip_planner.utils;
 
+import android.os.Build;
+
+import androidx.annotation.RequiresApi;
+
+import java.time.Duration;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 public class DataProcess {
@@ -10,7 +17,8 @@ public class DataProcess {
     private ArrayList<String> mTimeTransport = new ArrayList<>();
     private ArrayList<String> mStopTransport = new ArrayList<>();
 
-    public void setData(ArrayList<String> stopList, ArrayList<String> transportList, ArrayList<String> timeList) {
+
+    public void setStopTimeTransport(ArrayList<String> stopList, ArrayList<String> transportList, ArrayList<String> timeList) {
         mStopList = stopList;
         mTransportList = transportList;
         mTimeList = timeList;
@@ -39,7 +47,7 @@ public class DataProcess {
     }
 
     public String combinedData() {
-        String outcome = "";
+        StringBuilder outcome = new StringBuilder();
         for (int i = 0; i < mTransportList.size(); i++) {
             String oneLine = "";
             if (!mTransportList.get(i).equals("")) {
@@ -58,8 +66,22 @@ public class DataProcess {
                 oneLine = line + ": " + startTime + " " + startStop +
                         " - " + stopTime + " " + stopStop;
             }
-            outcome = outcome + oneLine + "\n";
+            outcome.append(oneLine).append("\n");
         }
-        return outcome;
+        String outcome2 = outcome.toString();
+        return outcome2.trim();
     }
+
+    @RequiresApi(api = Build.VERSION_CODES.S)
+    public String setTime(String departure, String arrival) {
+        LocalTime start = Helpers.timeFromString(departure);
+        LocalTime stop = Helpers.timeFromString(arrival);
+        Duration deltaT = Duration.between(start, stop);
+        int minutes = deltaT.toMinutesPart();
+        int hours = deltaT.toHoursPart();
+        return "Total time: " + hours + ":" + Helpers.padWithZeroes(minutes);
+    }
+
+
+
 }

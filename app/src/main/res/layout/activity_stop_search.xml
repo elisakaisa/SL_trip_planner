@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/background">
@@ -10,8 +9,9 @@
         android:id="@+id/layout_origin"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="16dp"
         android:orientation="horizontal"
+        android:gravity="center"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -24,7 +24,6 @@
             android:layout_marginStart="16dp"
             android:layout_weight="1"
             android:autofillHints="to"
-            android:layout_marginTop="10dp"
             android:hint="@string/from" />
 
         <SearchView
@@ -43,8 +42,9 @@
         android:id="@+id/layout_destination"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="16dp"
         android:orientation="horizontal"
+        android:gravity="center"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/layout_origin">
@@ -57,7 +57,6 @@
             android:layout_marginStart="16dp"
             android:layout_weight="1"
             android:autofillHints="to"
-            android:layout_marginTop="10dp"
             android:hint="@string/to" />
 
         <SearchView
@@ -76,30 +75,52 @@
         android:id="@+id/layout_date_time"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="16dp"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/layout_destination">
 
+        <com.google.android.material.switchmaterial.SwitchMaterial
+            android:id="@+id/departure_arrival_switch"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:textOff="@string/departure"
+            android:textOn="@string/arrival" />
+
+        <TextView
+            android:id="@+id/departure_arrival_text"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="3"
+            android:gravity="center"
+            android:text="@string/departure"/>
+
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="2" />
+
         <TextView
             android:id="@+id/time_ET"
             android:text="@string/time"
-            android:textAlignment="center"
+            android:gravity="center"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="4dp"
-            android:layout_weight="1"
+            android:layout_weight="4"
             android:autofillHints="time" />
 
         <TextView
             android:id="@+id/date_ET"
             android:text="@string/date"
-            android:textAlignment="center"
+            android:gravity="center"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="4dp"
-            android:layout_weight="1"
+            android:layout_weight="4"
             android:autofillHints="date" />
 
     </LinearLayout>
@@ -108,21 +129,26 @@
         android:id="@+id/search"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="16dp"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/layout_date_time">
 
-        <androidx.appcompat.widget.SwitchCompat
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"/>
-
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="6" />
         <Button
             android:id="@+id/btn_go"
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_width="0dp"
+            android:layout_weight="2"
             android:text="@string/go"/>
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1" />
 
     </LinearLayout>
 

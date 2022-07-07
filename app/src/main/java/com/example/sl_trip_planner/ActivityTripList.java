@@ -45,8 +45,9 @@ public class ActivityTripList extends AppCompatActivity {
     private TextView from_to_TV;
 
     /*------- DATA ---------*/
-    public int originId, destinationId;
-    public String time, date;
+    private int originId, destinationId;
+    private String time, date;
+    private int searchForArrival;
 
     // runs in onStart
     private final Runnable timerRunnable = new Runnable() {
@@ -61,7 +62,6 @@ public class ActivityTripList extends AppCompatActivity {
             // Networking
             boolean isConnected = activeNetwork != null && activeNetwork.isConnectedOrConnecting();
             Log.i(LOG_TAG, "isConnected? " + isConnected);
-
 
             if (isConnected) {
                 postVolleyRequest();
@@ -82,6 +82,7 @@ public class ActivityTripList extends AppCompatActivity {
         destinationId = intent.getIntExtra(Stops.DESTINATION_ID, 0);
         time = intent.getStringExtra(Stops.TIME);
         date = intent.getStringExtra(Stops.DATE);
+        searchForArrival = intent.getIntExtra(Stops.SEARCHFORARRIVAL, 0);
 
         /*---------- HOOKS ------------*/
         recyclerView = findViewById(R.id.recyclerView);
@@ -109,7 +110,7 @@ public class ActivityTripList extends AppCompatActivity {
 
     public void postVolleyRequest() {
         Log.i(LOG_TAG, "postvolleyrequest entered");
-        String mUrl = parser.setTripUrl(originId, destinationId, time, date);
+        String mUrl = parser.setTripUrl(originId, destinationId, time, date, searchForArrival);
             // get data
             JsonObjectRequest tripRequest = new JsonObjectRequest(Request.Method.GET,
                     mUrl,
@@ -130,8 +131,7 @@ public class ActivityTripList extends AppCompatActivity {
                             Toast.makeText(getApplicationContext(), "Download completed", Toast.LENGTH_SHORT).show();
 
                         } catch (Exception e) {
-                            Log.i("error whilst parsing", e.toString());
-                            //createMsgDialog("Parsing error", "Corrupt data").show();
+                            new AlertDial().createMsgDialog(ActivityTripList.this, "Parsing error", e.toString()).show();
                         }
                     },
                     errorListener);
@@ -142,15 +142,17 @@ public class ActivityTripList extends AppCompatActivity {
     private void fillRecyclerView(List<JourneyModel> journeyData) {
         ArrayList<JourneyList> itemList = new ArrayList<>();
         for (JourneyModel instantJourney : journeyData) {
-            String origin = instantJourney.getOrigin();
-            String destination = instantJourney.getDestination();
             String departureTime = instantJourney.getDepartureTime();
             String arrivalTime = instantJourney.getArrivalTime();
             ArrayList<String> transportList = instantJourney.getTransportList();
             ArrayList<String> timeTransportData = instantJourney.getTimeTransportData();
             ArrayList<String> stopTransportData = instantJourney.getStopTransportData();
             String combinedData = instantJourney.getCombinedData();
-            itemList.add(new JourneyRecycler(origin, destination, departureTime, arrivalTime, stopTransportData, timeTransportData, combinedData));
+            String deltaT = instantJourney.getDeltaT();
+            itemList.add(new JourneyRecycler(
+                    departureTime, arrivalTime,
+                    stopTransportData, timeTransportData, combinedData,
+                    deltaT));
         }
         RecyclerView.Adapter<JourneyAdapter.ViewHolder> adapter = new JourneyAdapter(itemList);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);

@@ -1,5 +1,9 @@
 package com.example.sl_trip_planner.data;
 
+import android.os.Build;
+
+import androidx.annotation.RequiresApi;
+
 import com.example.sl_trip_planner.utils.DataProcess;
 
 import org.json.JSONArray;
@@ -23,16 +27,13 @@ public class JSONparser {
 
     public String setSearchUrl(String stopName) {
         String ApiKey = ApiKeys.API_KEY_stops;
-        String url = "https://api.sl.se/api2/typeahead.json?key=" + ApiKey + "&searchstring=" + stopName;
-        return url;
+        return "https://api.sl.se/api2/typeahead.json?key=" + ApiKey + "&searchstring=" + stopName;
     }
 
     public List<StopModel> getStops(JSONObject stopObj) throws JSONException {
         List <StopModel> stopData = new ArrayList<>();
-
         JSONArray responseData = stopObj.getJSONArray("ResponseData");
         ArrayList<String> stopArrayList = new ArrayList<>();
-        //stopData.add(instantStop);
         for (int i = 0; i < responseData.length(); i++) {
             JSONObject details = responseData.getJSONObject(i);
 
@@ -44,25 +45,37 @@ public class JSONparser {
             instantStop.setStopName(name);
             instantStop.setStopId(Integer.parseInt(siteId));
             stopArrayList.add(name);
-            //stopData.add(instantStop);
         }
-
         if (responseData.length() == 0) {
             //new AlertDial().createMsgDialog(getContext(), "No internet connection", "Please turn on internet connection").show();
         }
         return stopData;
     }
 
-    public String setTripUrl(int originId, int destinationId, String time, String date) {
+    public String setTripUrl(int originId, int destinationId, String time, String date, int searchForArrival) {
         String ApiKey = ApiKeys.API_KEY_trip_planner;
         String url = "https://api.sl.se/api2/TravelplannerV3_1/trip.json?key=" + ApiKey + "&originId=" + originId + "&destId=" + destinationId;
-        if (!time.equals("time")) {
-            url = "https://api.sl.se/api2/TravelplannerV3_1/trip.json?key=" +
-                    ApiKey + "&originId=" + originId + "&destId=" + destinationId + "&Time=" + time;
-            if (!date.equals("date")) {
+        if (searchForArrival == 1 ) {
+            url = "https://api.sl.se/api2/TravelplannerV3_1/trip.json?key=" + ApiKey + "&originId=" + originId +
+                    "&destId=" + destinationId + "&searchForArrival=" + searchForArrival;
+            if (!time.equals("time")) {
                 url = "https://api.sl.se/api2/TravelplannerV3_1/trip.json?key=" +
-                        ApiKey + "&originId=" + originId + "&destId=" + destinationId +
-                        "&Time=" + time + "&Date=" + date;
+                        ApiKey + "&originId=" + originId + "&destId=" + destinationId + "&Time=" + time + "&searchForArrival=" + searchForArrival;
+                if (!date.equals("date")) {
+                    url = "https://api.sl.se/api2/TravelplannerV3_1/trip.json?key=" +
+                            ApiKey + "&originId=" + originId + "&destId=" + destinationId +
+                            "&Time=" + time + "&Date=" + date + "&searchForArrival=" + searchForArrival;
+                }
+            }
+        } else {
+            if (!time.equals("time")) {
+                url = "https://api.sl.se/api2/TravelplannerV3_1/trip.json?key=" +
+                        ApiKey + "&originId=" + originId + "&destId=" + destinationId + "&Time=" + time;
+                if (!date.equals("date")) {
+                    url = "https://api.sl.se/api2/TravelplannerV3_1/trip.json?key=" +
+                            ApiKey + "&originId=" + originId + "&destId=" + destinationId +
+                            "&Time=" + time + "&Date=" + date;
+                }
             }
         }
         return url;
@@ -103,17 +116,17 @@ public class JSONparser {
                 // Origin
                 JSONObject origin = details2.getJSONObject(ORIGIN);
                 originNameList.add(origin.getString(NAME));
-                originTimeList.add(origin.getString(TIME));
+                originTimeList.add(origin.getString(TIME).substring(0, origin.getString(TIME).length() - 3));
                 stopList.add(origin.getString(NAME));
-                timeList.add(origin.getString(TIME));
+                timeList.add(origin.getString(TIME).substring(0, origin.getString(TIME).length() - 3));
 
 
                 // Destination
                 JSONObject destination = details2.getJSONObject(DESTINATION);
                 destinationNameList.add(destination.getString(NAME));
-                destinationTimeList.add(destination.getString(TIME));
+                destinationTimeList.add(destination.getString(TIME).substring(0, destination.getString(TIME).length() - 3));
                 stopList.add(destination.getString(NAME));
-                timeList.add(destination.getString(TIME));
+                timeList.add(destination.getString(TIME).substring(0, destination.getString(TIME).length() - 3));
 
 
             }
@@ -128,7 +141,7 @@ public class JSONparser {
             instantJourney.setTimeList(timeList);
 
             // DATA PROCESSING
-            cDataProcess.setData(stopList, transportList, timeList);
+            cDataProcess.setStopTimeTransport(stopList, transportList, timeList);
             timeTransport = cDataProcess.combineTimeTransport();
             stopTransport = cDataProcess.combineStopTransport();
             String outcome = cDataProcess.combinedData();
@@ -137,6 +150,11 @@ public class JSONparser {
             instantJourney.setStopTransportData(stopTransport);
             instantJourney.setCombinedData(outcome);
 
+            String deltaT = null;
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.S) {
+                deltaT = cDataProcess.setTime(originTimeList.get(0), destinationTimeList.get(destinationTimeList.size()-1));
+            }
+            instantJourney.setDeltaT(deltaT);
         }
 
         return journeyData;

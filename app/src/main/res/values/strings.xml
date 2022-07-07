@@ -6,4 +6,7 @@
     <string name="go">GO</string>
     <string name="time">time</string>
     <string name="date">date</string>
+    <string name="any_trip">Any trip</string>
+    <string name="departure">departure</string>
+    <string name="arrival">arrival</string>
 </resources>

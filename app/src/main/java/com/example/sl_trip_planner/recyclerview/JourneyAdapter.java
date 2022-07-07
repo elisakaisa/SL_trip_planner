@@ -17,8 +17,8 @@ public class JourneyAdapter extends RecyclerView.Adapter<JourneyAdapter.ViewHold
     private ArrayList<JourneyList> mJourney;
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        public TextView originTV, destinationTV, departureTimeTV, arrivalTimeTV,
-                        transportListTV, stopListTV;
+        public TextView departureTimeTV, arrivalTimeTV,
+                        transportListTV, stopListTV, deltaTTV;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -26,6 +26,7 @@ public class JourneyAdapter extends RecyclerView.Adapter<JourneyAdapter.ViewHold
             departureTimeTV = itemView.findViewById(R.id.departure_time_text);
             transportListTV = itemView.findViewById(R.id.transport_list);
             stopListTV = itemView.findViewById(R.id.stop_list);
+            deltaTTV = itemView.findViewById(R.id.total_time);
         }
     }
     // initialize dataset of the adapter
@@ -46,10 +47,9 @@ public class JourneyAdapter extends RecyclerView.Adapter<JourneyAdapter.ViewHold
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         // get elements from dataset & replace the contents of the view with that element
         JourneyRecycler currentJourney = (JourneyRecycler) mJourney.get(position);
-        //holder.originTV.setText(currentJourney.getTextOrigin());
-        //holder.destinationTV.setText(currentJourney.getTextDestination());
         holder.departureTimeTV.setText(currentJourney.getTextDepartureTime());
         holder.arrivalTimeTV.setText(currentJourney.getTextArrivalTime());
+        holder.deltaTTV.setText(currentJourney.getTextDeltaT());
         holder.transportListTV.setText(currentJourney.getTextCombinedData());
         //holder.stopListTV.setText(currentJourney.getTextTimeTrabnsportList());
     }

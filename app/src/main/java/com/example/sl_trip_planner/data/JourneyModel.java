@@ -10,6 +10,7 @@ public class JourneyModel {
     private ArrayList<String> mTimeTransportData;
     private ArrayList<String> mStopTransportData;
     private String mCombinedData;
+    private String mDeltaT;
 
     // set methods
     public void setOrigin(String origin) { mOrigin = origin; }
@@ -17,15 +18,14 @@ public class JourneyModel {
     public void setDepartureTime (String departureTime) { mDepartureTime = departureTime; }
     public void setArrivalTime (String arrivalTime) { mArrivalTime = arrivalTime; }
     public void setStopList (ArrayList<String> stopList) {mStopList = stopList; }
-    public void setTimeList (ArrayList<String> timeList) {mStopList = timeList; }
+    public void setTimeList (ArrayList<String> timeList) {mTimeList = timeList; }
     public void setTransportList (ArrayList<String> transportList) {mTransportList = transportList;}
     public void setTimeTransportData(ArrayList<String> timeTransportData) {
         mTimeTransportData = timeTransportData;}
     public void setStopTransportData(ArrayList<String> stopTransportData) {
         mStopTransportData = stopTransportData;}
-    public void setCombinedData(String combinedData) {
-        mCombinedData = combinedData;
-    }
+    public void setCombinedData(String combinedData) { mCombinedData = combinedData; }
+    public void setDeltaT(String deltaT) { mDeltaT = deltaT; }
 
     // get methods
     public String getOrigin() { return mOrigin; }
@@ -38,4 +38,5 @@ public class JourneyModel {
     public ArrayList<String> getTimeTransportData() { return mTimeTransportData; }
     public ArrayList<String> getStopTransportData() { return mStopTransportData; }
     public String getCombinedData() { return mCombinedData; }
+    public String getDeltaT() { return mDeltaT; }
 }

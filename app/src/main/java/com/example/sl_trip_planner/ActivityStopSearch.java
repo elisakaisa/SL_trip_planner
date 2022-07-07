@@ -13,7 +13,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.widget.Button;
-import android.widget.EditText;
+import android.widget.CompoundButton;
 import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -36,6 +36,8 @@ import com.example.sl_trip_planner.recyclerview.StopAdapter;
 import com.example.sl_trip_planner.recyclerview.StopRecycler;
 import com.example.sl_trip_planner.recyclerview.StopRecyclerViewInterface;
 import com.example.sl_trip_planner.utils.AlertDial;
+import com.example.sl_trip_planner.utils.Helpers;
+import com.google.android.material.switchmaterial.SwitchMaterial;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -50,17 +52,20 @@ public class ActivityStopSearch extends AppCompatActivity implements StopRecycle
     private final Handler timerHandler = new Handler();
     private JSONparser parser;
 
+    /* -------- HOOKS ---------*/
     private SearchView originSV;
     private SearchView destinationSV;
     private RecyclerView stopsRV;
-    private TextView timeET, dateET;
+    private TextView timeET, dateET, depArrTV;
+    private SwitchMaterial depArrSwitch;
 
+    /*--------- VAR ----------*/
     private int originId = -1;
     private int destinationId = -1;
     boolean start = true;
+    int searchForArrival = 0;
 
-    //check network connection
-    // runs in onStart
+    //check network connection, runs in onStart
     private final Runnable timerRunnable = () -> {
         ConnectivityManager connectivityManager = (ConnectivityManager) getApplication()
                 .getApplicationContext()
@@ -87,12 +92,15 @@ public class ActivityStopSearch extends AppCompatActivity implements StopRecycle
         Button btn_go = findViewById(R.id.btn_go);
         timeET = findViewById(R.id.time_ET);
         dateET = findViewById(R.id.date_ET);
+        depArrSwitch = findViewById(R.id.departure_arrival_switch);
+        depArrTV = findViewById(R.id.departure_arrival_text);
 
         /*-------- VOLLEY & DATA ---------*/
         mRequestQueue = Volley.newRequestQueue(this);
         parser = new JSONparser();
         stopList = StopList.getInstance();
 
+        /*--------- INIT -----------*/
         search(originSV, true);
         search(destinationSV, false);
 
@@ -104,8 +112,18 @@ public class ActivityStopSearch extends AppCompatActivity implements StopRecycle
         });
         timeET.setOnClickListener(v -> timePickerDialog());
         dateET.setOnClickListener(v -> datePickerDialog());
-
-
+        depArrSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
+                if (isChecked) {
+                    searchForArrival = 1;
+                    depArrTV.setText(R.string.arrival);
+                } else {
+                    searchForArrival = 0;
+                    depArrTV.setText(R.string.departure);
+                }
+            }
+        });
     }
 
     @Override
@@ -130,10 +148,7 @@ public class ActivityStopSearch extends AppCompatActivity implements StopRecycle
             @Override
             public boolean onQueryTextChange(String s) {
                 start = search;
-                Log.i(LOG_TAG, s);
-                if (s.length() > 7) {
-                    postVolleyRequest(s);
-                }
+                if (s.length() > 7) postVolleyRequest(s);
                 return false;
             }
         });
@@ -200,6 +215,16 @@ public class ActivityStopSearch extends AppCompatActivity implements StopRecycle
         }
     }
 
+    public void switchController() {
+        if (depArrSwitch.isChecked()) {
+            searchForArrival = 1;
+            depArrTV.setText(R.string.arrival);
+        } else {
+            searchForArrival = 0;
+            depArrTV.setText(R.string.departure);
+        }
+    }
+
     public void searchJourneys(int origin, int destination, String time, String date) {
         if (originId == -1 || destinationId == -1 ) {
             // check for missing origin and/or destination
@@ -213,6 +238,7 @@ public class ActivityStopSearch extends AppCompatActivity implements StopRecycle
                 intent.putExtra(Stops.TIME, time);
                 intent.putExtra(Stops.ORIGIN_ID, origin);
                 intent.putExtra(Stops.DESTINATION_ID, destination);
+                intent.putExtra(Stops.SEARCHFORARRIVAL, searchForArrival);
                 startActivity(intent);
             }
         }
@@ -240,11 +266,8 @@ public class ActivityStopSearch extends AppCompatActivity implements StopRecycle
         int mDay = calendar.get(Calendar.DAY_OF_MONTH);
         DatePickerDialog datePickerDialog = new DatePickerDialog(ActivityStopSearch.this,
                 (view, year, month, day) -> {
-                    String sMonth = String.valueOf(month + 1);
-                    String sDay = String.valueOf(day);
-                    // set day of month , month and year value in the edit text
-                    if ((month + 1) < 10) { sMonth = "0" + (month + 1); }
-                    if (day < 10) { sDay = "0" + day; }
+                    String sMonth = Helpers.padWithZeroes(month + 1);
+                    String sDay = Helpers.padWithZeroes(day);
                     String date = year + "-"  + sMonth + "-" + sDay;
                     dateET.setText(date);
                 }, mYear, mMonth, mDay);
