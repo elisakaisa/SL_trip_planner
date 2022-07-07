@@ -1,4 +1,4 @@
-package com.example.sl_trip_planner.data;
+package com.example.sl_trip_planner.models;
 
 import java.util.ArrayList;
 

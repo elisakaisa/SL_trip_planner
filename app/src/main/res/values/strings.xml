@@ -9,4 +9,6 @@
     <string name="any_trip">Any trip</string>
     <string name="departure">departure</string>
     <string name="arrival">arrival</string>
+    <string name="previous_trips">previous trips</string>
+    <string name="next_trips">next trips</string>
 </resources>

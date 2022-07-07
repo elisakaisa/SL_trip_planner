@@ -13,7 +13,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.widget.Button;
-import android.widget.CompoundButton;
 import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -28,10 +27,11 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
-import com.example.sl_trip_planner.data.JSONparser;
+import com.example.sl_trip_planner.apidata.JSONParser;
 import com.example.sl_trip_planner.data.StopList;
-import com.example.sl_trip_planner.data.StopModel;
+import com.example.sl_trip_planner.models.StopModel;
 import com.example.sl_trip_planner.data.Stops;
+import com.example.sl_trip_planner.apidata.UrlSetter;
 import com.example.sl_trip_planner.recyclerview.StopAdapter;
 import com.example.sl_trip_planner.recyclerview.StopRecycler;
 import com.example.sl_trip_planner.recyclerview.StopRecyclerViewInterface;
@@ -50,14 +50,13 @@ public class ActivityStopSearch extends AppCompatActivity implements StopRecycle
     private RequestQueue mRequestQueue;
     private List<StopModel> stopList;
     private final Handler timerHandler = new Handler();
-    private JSONparser parser;
+    private JSONParser parser;
 
     /* -------- HOOKS ---------*/
     private SearchView originSV;
     private SearchView destinationSV;
     private RecyclerView stopsRV;
     private TextView timeET, dateET, depArrTV;
-    private SwitchMaterial depArrSwitch;
 
     /*--------- VAR ----------*/
     private int originId = -1;
@@ -92,12 +91,12 @@ public class ActivityStopSearch extends AppCompatActivity implements StopRecycle
         Button btn_go = findViewById(R.id.btn_go);
         timeET = findViewById(R.id.time_ET);
         dateET = findViewById(R.id.date_ET);
-        depArrSwitch = findViewById(R.id.departure_arrival_switch);
+        SwitchMaterial depArrSwitch = findViewById(R.id.departure_arrival_switch);
         depArrTV = findViewById(R.id.departure_arrival_text);
 
         /*-------- VOLLEY & DATA ---------*/
         mRequestQueue = Volley.newRequestQueue(this);
-        parser = new JSONparser();
+        parser = new JSONParser();
         stopList = StopList.getInstance();
 
         /*--------- INIT -----------*/
@@ -112,16 +111,13 @@ public class ActivityStopSearch extends AppCompatActivity implements StopRecycle
         });
         timeET.setOnClickListener(v -> timePickerDialog());
         dateET.setOnClickListener(v -> datePickerDialog());
-        depArrSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
-                if (isChecked) {
-                    searchForArrival = 1;
-                    depArrTV.setText(R.string.arrival);
-                } else {
-                    searchForArrival = 0;
-                    depArrTV.setText(R.string.departure);
-                }
+        depArrSwitch.setOnCheckedChangeListener((compoundButton, isChecked) -> {
+            if (isChecked) {
+                searchForArrival = 1;
+                depArrTV.setText(R.string.arrival);
+            } else {
+                searchForArrival = 0;
+                depArrTV.setText(R.string.departure);
             }
         });
     }
@@ -169,15 +165,14 @@ public class ActivityStopSearch extends AppCompatActivity implements StopRecycle
 
 
     public void postVolleyRequest(String searchKeys) {
-        Log.i(LOG_TAG, "postvolleyrequest entered");
-        String mUrl = parser.setSearchUrl(searchKeys);
+        String mUrl = UrlSetter.setSearchUrl(searchKeys);
         // get data
         JsonObjectRequest stopRequest = new JsonObjectRequest(Request.Method.GET,
                 mUrl,
                 null,
                 response1 -> {
                     try {
-                        List<StopModel> newStops = parser.getStops(response1);
+                        List<StopModel> newStops = parser.getStops(response1, getApplicationContext());
                         if (stopList != null) {
                             stopList.clear();
                             stopList.addAll(newStops);
@@ -212,16 +207,6 @@ public class ActivityStopSearch extends AppCompatActivity implements StopRecycle
             destinationId = stopList.get(position).getStopId();
             destinationSV.setQuery(destinationText, false);
             Toast.makeText(getApplicationContext(), destinationText + " chosen as destination", Toast.LENGTH_SHORT).show();
-        }
-    }
-
-    public void switchController() {
-        if (depArrSwitch.isChecked()) {
-            searchForArrival = 1;
-            depArrTV.setText(R.string.arrival);
-        } else {
-            searchForArrival = 0;
-            depArrTV.setText(R.string.departure);
         }
     }
 

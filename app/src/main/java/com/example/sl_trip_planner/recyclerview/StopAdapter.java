@@ -24,14 +24,11 @@ public class StopAdapter extends RecyclerView.Adapter<StopAdapter.ViewHolder>{
             super(itemView);
             stopNameTV = itemView.findViewById(R.id.stopName);
 
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if (mRecyclerViewInterface != null) {
-                        int position = getAdapterPosition();
-                        if (position != RecyclerView.NO_POSITION){
-                            mRecyclerViewInterface.onItemClick(position);
-                        }
+            itemView.setOnClickListener(view -> {
+                if (mRecyclerViewInterface != null) {
+                    int position = getAdapterPosition();
+                    if (position != RecyclerView.NO_POSITION){
+                        mRecyclerViewInterface.onItemClick(position);
                     }
                 }
             });

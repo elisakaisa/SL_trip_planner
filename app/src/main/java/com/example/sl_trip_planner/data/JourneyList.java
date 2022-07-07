@@ -1,5 +1,7 @@
 package com.example.sl_trip_planner.data;
 
+import com.example.sl_trip_planner.models.JourneyModel;
+
 import java.util.ArrayList;
 import java.util.List;
 

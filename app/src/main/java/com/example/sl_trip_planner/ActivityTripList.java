@@ -7,8 +7,8 @@ import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
+import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -19,10 +19,11 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
-import com.example.sl_trip_planner.data.JSONparser;
+import com.example.sl_trip_planner.apidata.JSONParser;
 import com.example.sl_trip_planner.data.JourneyList;
-import com.example.sl_trip_planner.data.JourneyModel;
+import com.example.sl_trip_planner.models.JourneyModel;
 import com.example.sl_trip_planner.data.Stops;
+import com.example.sl_trip_planner.apidata.UrlSetter;
 import com.example.sl_trip_planner.recyclerview.JourneyAdapter;
 import com.example.sl_trip_planner.recyclerview.JourneyRecycler;
 import com.example.sl_trip_planner.utils.AlertDial;
@@ -38,16 +39,16 @@ public class ActivityTripList extends AppCompatActivity {
     private List<JourneyModel> journeyList;
 
     private final Handler timerHandler = new Handler();
-    private JSONparser parser;
+    private JSONParser parser;
+    private String mUrl = "";
 
     /*-------- HOOKS -------*/
     private RecyclerView recyclerView;
     private TextView from_to_TV;
 
-    /*------- DATA ---------*/
-    private int originId, destinationId;
-    private String time, date;
-    private int searchForArrival;
+    /*-------- VAR -------*/
+    private String scrB;
+    private String scrF;
 
     // runs in onStart
     private final Runnable timerRunnable = new Runnable() {
@@ -64,7 +65,7 @@ public class ActivityTripList extends AppCompatActivity {
             Log.i(LOG_TAG, "isConnected? " + isConnected);
 
             if (isConnected) {
-                postVolleyRequest();
+                postVolleyRequest(mUrl);
             } else {
                 new AlertDial().createMsgDialog(ActivityTripList.this, "No internet connection", "Please turn on internet connection").show();
             }
@@ -78,21 +79,28 @@ public class ActivityTripList extends AppCompatActivity {
 
         /*-------- INTENT -----------*/
         Intent intent = getIntent();
-        originId = intent.getIntExtra(Stops.ORIGIN_ID, 0);
-        destinationId = intent.getIntExtra(Stops.DESTINATION_ID, 0);
-        time = intent.getStringExtra(Stops.TIME);
-        date = intent.getStringExtra(Stops.DATE);
-        searchForArrival = intent.getIntExtra(Stops.SEARCHFORARRIVAL, 0);
+        /*------- DATA ---------*/
+        int originId = intent.getIntExtra(Stops.ORIGIN_ID, 0);
+        int destinationId = intent.getIntExtra(Stops.DESTINATION_ID, 0);
+        String time = intent.getStringExtra(Stops.TIME);
+        String date = intent.getStringExtra(Stops.DATE);
+        int searchForArrival = intent.getIntExtra(Stops.SEARCHFORARRIVAL, 0);
+        mUrl = UrlSetter.setTripUrl(originId, destinationId, time, date, searchForArrival);
 
         /*---------- HOOKS ------------*/
         recyclerView = findViewById(R.id.recyclerView);
         from_to_TV = findViewById(R.id.from_to);
+        Button btn_previous = findViewById(R.id.btn_previous);
+        Button btn_next = findViewById(R.id.btn_next);
 
         /*-------- VOLLEY & DATA ---------*/
         mRequestQueue = Volley.newRequestQueue(this);
-        parser = new JSONparser();
+        parser = new JSONParser();
         journeyList = JourneyList.getInstance();
 
+        /*--------- LISTENERS ------------*/
+        btn_previous.setOnClickListener(v -> postVolleyRequest(mUrl + "&Context=" + scrB));
+        btn_next.setOnClickListener(v -> postVolleyRequest(mUrl + "&Context=" + scrF));
     }
 
     @Override
@@ -108,12 +116,11 @@ public class ActivityTripList extends AppCompatActivity {
         mRequestQueue.cancelAll(this);
     }
 
-    public void postVolleyRequest() {
-        Log.i(LOG_TAG, "postvolleyrequest entered");
-        String mUrl = parser.setTripUrl(originId, destinationId, time, date, searchForArrival);
+    public void postVolleyRequest(String url) {
+        Log.i(LOG_TAG, "postVolleyRequest entered");
             // get data
             JsonObjectRequest tripRequest = new JsonObjectRequest(Request.Method.GET,
-                    mUrl,
+                    url,
                     null,
                     response1 -> {
                         try {
@@ -127,8 +134,12 @@ public class ActivityTripList extends AppCompatActivity {
 
                             String origin = journeyList.get(0).getOrigin();
                             String destination = journeyList.get(0).getDestination();
-                            from_to_TV.setText(origin + " -> " + destination);
-                            Toast.makeText(getApplicationContext(), "Download completed", Toast.LENGTH_SHORT).show();
+                            String s = origin + " -> " + destination;
+                            from_to_TV.setText(s);
+
+                            // get context data for previous and following trips
+                            scrB = parser.getScrBFromParser();
+                            scrF = parser.getScrFFromParser();
 
                         } catch (Exception e) {
                             new AlertDial().createMsgDialog(ActivityTripList.this, "Parsing error", e.toString()).show();
@@ -144,7 +155,7 @@ public class ActivityTripList extends AppCompatActivity {
         for (JourneyModel instantJourney : journeyData) {
             String departureTime = instantJourney.getDepartureTime();
             String arrivalTime = instantJourney.getArrivalTime();
-            ArrayList<String> transportList = instantJourney.getTransportList();
+            //ArrayList<String> transportList = instantJourney.getTransportList();
             ArrayList<String> timeTransportData = instantJourney.getTimeTransportData();
             ArrayList<String> stopTransportData = instantJourney.getStopTransportData();
             String combinedData = instantJourney.getCombinedData();
