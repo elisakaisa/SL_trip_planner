@@ -22,7 +22,8 @@ public class JSONParser {
             ORIGIN = "Origin",
             DESTINATION = "Destination",
             NAME = "name",
-            TIME = "time";
+            TIME = "time",
+            RT_TIME = "rtTime";
 
     public List<StopModel> getStops(JSONObject stopObj, Context context) throws JSONException {
         List <StopModel> stopData = new ArrayList<>();
@@ -61,9 +62,12 @@ public class JSONParser {
             ArrayList<String> originNameList = new ArrayList<>();
             ArrayList<String> destinationNameList = new ArrayList<>();
             ArrayList<String> originTimeList = new ArrayList<>();
+            ArrayList<String> originRtTimeList = new ArrayList<>();
             ArrayList<String> destinationTimeList = new ArrayList<>();
+            ArrayList<String> destinationRtTimeList = new ArrayList<>();
             ArrayList<String> stopList = new ArrayList<>();
             ArrayList<String> timeList = new ArrayList<>();
+            ArrayList<String> rtTimeList = new ArrayList<>();
             ArrayList<String> transportList = new ArrayList<>();
             ArrayList<String> timeTransport;
             ArrayList<String> stopTransport;
@@ -79,6 +83,15 @@ public class JSONParser {
                 stopList.add(origin.getString(NAME));
                 timeList.add(origin.getString(TIME).substring(0, origin.getString(TIME).length() - 3));
 
+                // Origin real-time data
+                if (!origin.has(RT_TIME)) {
+                    originRtTimeList.add(origin.getString(TIME).substring(0, origin.getString(TIME).length() - 3));
+                    rtTimeList.add(origin.getString(TIME).substring(0, origin.getString(TIME).length() - 3));
+                } else {
+                    originRtTimeList.add(origin.getString(RT_TIME).substring(0, origin.getString(RT_TIME).length() - 3));
+                    rtTimeList.add(origin.getString(RT_TIME).substring(0, origin.getString(RT_TIME).length() - 3));
+                }
+
 
                 // Destination
                 JSONObject destination = details2.getJSONObject(DESTINATION);
@@ -87,31 +100,49 @@ public class JSONParser {
                 stopList.add(destination.getString(NAME));
                 timeList.add(destination.getString(TIME).substring(0, destination.getString(TIME).length() - 3));
 
+                //Destination real-time data
+                if (!destination.has(RT_TIME)) {
+                    destinationRtTimeList.add(destination.getString(TIME).substring(0, destination.getString(TIME).length() - 3));
+                    rtTimeList.add(destination.getString(TIME).substring(0, destination.getString(TIME).length() - 3));
+                } else {
+                    destinationRtTimeList.add(destination.getString(RT_TIME).substring(0, destination.getString(RT_TIME).length() - 3));
+                    rtTimeList.add(destination.getString(RT_TIME).substring(0, destination.getString(RT_TIME).length() - 3));
+                }
+
 
             }
+            // to from (place)
             instantJourney.setOrigin(originNameList.get(0));
-            instantJourney.setDepartureTime(originTimeList.get(0));
-
             instantJourney.setDestination(destinationNameList.get(destinationNameList.size()-1));
+            // to from (time)
+            instantJourney.setDepartureTime(originTimeList.get(0));
             instantJourney.setArrivalTime(destinationTimeList.get(destinationTimeList.size()-1));
+            // to from (real-time)
+            instantJourney.setRtDepartureTime(originRtTimeList.get(0));
+            instantJourney.setRtArrivalTime(destinationRtTimeList.get(destinationRtTimeList.size()-1));
 
             instantJourney.setTransportList(transportList);
             instantJourney.setStopList(stopList);
             instantJourney.setTimeList(timeList);
+            instantJourney.setRtTimeList(rtTimeList);
 
             // DATA PROCESSING
-            cDataProcess.setStopTimeTransport(stopList, transportList, timeList);
-            timeTransport = cDataProcess.combineTimeTransport();
-            stopTransport = cDataProcess.combineStopTransport();
+            cDataProcess.setStopTimeTransport(stopList, transportList, timeList, rtTimeList);
+            //timeTransport = cDataProcess.combineTimeTransport();
+            //stopTransport = cDataProcess.combineStopTransport();
             String outcome = cDataProcess.combinedData();
+            String rtOutcome = cDataProcess.rtCombinedData();
             String deltaT = null;
+            String rtDeltaT = null;
             if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.S) {
                 deltaT = cDataProcess.setTime(originTimeList.get(0), destinationTimeList.get(destinationTimeList.size()-1));
+                rtDeltaT = cDataProcess.setTime(originRtTimeList.get(0), destinationRtTimeList.get(destinationRtTimeList.size()-1));
             }
-            instantJourney.setTimeTransportData(timeTransport);
-            instantJourney.setStopTransportData(stopTransport);
+
             instantJourney.setCombinedData(outcome);
+            instantJourney.setRtCombinedData(rtOutcome);
             instantJourney.setDeltaT(deltaT);
+            instantJourney.setRtDeltaT(rtDeltaT);
         }
 
         //get references scrB & scrF for trips before and after

@@ -11,4 +11,6 @@
     <string name="arrival">arrival</string>
     <string name="previous_trips">previous trips</string>
     <string name="next_trips">next trips</string>
+    <string name="clock">clock</string>
+    <string name="calendar">calendar</string>
 </resources>

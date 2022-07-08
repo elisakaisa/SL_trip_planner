@@ -15,12 +15,12 @@ import java.util.ArrayList;
 
 public class StopAdapter extends RecyclerView.Adapter<StopAdapter.ViewHolder>{
     private ArrayList<StopList> mStops;
-    private final StopRecyclerViewInterface mRecyclerViewInterface;
+    private final RecyclerViewInterface mRecyclerViewInterface;
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         public TextView stopNameTV;
 
-        public ViewHolder(View itemView, StopRecyclerViewInterface mRecyclerViewInterface) {
+        public ViewHolder(View itemView, RecyclerViewInterface mRecyclerViewInterface) {
             super(itemView);
             stopNameTV = itemView.findViewById(R.id.stopName);
 
@@ -36,7 +36,7 @@ public class StopAdapter extends RecyclerView.Adapter<StopAdapter.ViewHolder>{
     }
 
     //constructor
-    public StopAdapter(ArrayList<StopList> stopItemsList, StopRecyclerViewInterface mRecyclerViewInterface) {
+    public StopAdapter(ArrayList<StopList> stopItemsList, RecyclerViewInterface mRecyclerViewInterface) {
         this.mStops = stopItemsList;
         this.mRecyclerViewInterface = mRecyclerViewInterface;
     }

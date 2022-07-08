@@ -15,12 +15,18 @@ public class DataProcess {
     private ArrayList<String> mTimeList = new ArrayList<>();
     private ArrayList<String> mTimeTransport = new ArrayList<>();
     private ArrayList<String> mStopTransport = new ArrayList<>();
+    private ArrayList<String> mRtTimeList = new ArrayList<>();
 
 
-    public void setStopTimeTransport(ArrayList<String> stopList, ArrayList<String> transportList, ArrayList<String> timeList) {
+    public void setStopTimeTransport(
+            ArrayList<String> stopList,
+            ArrayList<String> transportList,
+            ArrayList<String> timeList,
+            ArrayList<String> rtTimeList) {
         mStopList = stopList;
         mTransportList = transportList;
         mTimeList = timeList;
+        mRtTimeList = rtTimeList;
     }
 
     public ArrayList<String> combineTimeTransport() {
@@ -63,9 +69,36 @@ public class DataProcess {
 
                 // combine
                 oneLine = line + ": " + startTime + " " + startStop +
-                        " - " + stopTime + " " + stopStop;
+                        " - " + stopTime + " " + stopStop + "\n";
             }
-            outcome.append(oneLine).append("\n");
+            outcome.append(oneLine);
+        }
+        String outcome2 = outcome.toString();
+        return outcome2.trim();
+    }
+
+    public String rtCombinedData() {
+        StringBuilder outcome = new StringBuilder();
+        outcome.append("Real-time \n");
+        for (int i = 0; i < mTransportList.size(); i++) {
+            String oneLine = "";
+            if (!mTransportList.get(i).equals("")) {
+                // Line
+                String line = mTransportList.get(i);
+
+                //from
+                String startTime = mRtTimeList.get(i*2);
+                String startStop = mStopList.get(i*2);
+
+                // to
+                String stopStop = mStopList.get(i*2+1);
+                String stopTime = mRtTimeList.get(i*2+1);
+
+                // combine
+                oneLine = line + ": " + startTime + " " + startStop +
+                        " - " + stopTime + " " + stopStop + "\n";
+            }
+            outcome.append(oneLine);
         }
         String outcome2 = outcome.toString();
         return outcome2.trim();

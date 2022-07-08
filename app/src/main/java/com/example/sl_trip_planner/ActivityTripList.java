@@ -26,12 +26,13 @@ import com.example.sl_trip_planner.data.Stops;
 import com.example.sl_trip_planner.apidata.UrlSetter;
 import com.example.sl_trip_planner.recyclerview.JourneyAdapter;
 import com.example.sl_trip_planner.recyclerview.JourneyRecycler;
+import com.example.sl_trip_planner.recyclerview.RecyclerViewInterface;
 import com.example.sl_trip_planner.utils.AlertDial;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ActivityTripList extends AppCompatActivity {
+public class ActivityTripList extends AppCompatActivity implements RecyclerViewInterface {
     private static final String LOG_TAG = "ActivityTripList";
 
     // Volley & data
@@ -155,17 +156,19 @@ public class ActivityTripList extends AppCompatActivity {
         for (JourneyModel instantJourney : journeyData) {
             String departureTime = instantJourney.getDepartureTime();
             String arrivalTime = instantJourney.getArrivalTime();
-            //ArrayList<String> transportList = instantJourney.getTransportList();
-            ArrayList<String> timeTransportData = instantJourney.getTimeTransportData();
-            ArrayList<String> stopTransportData = instantJourney.getStopTransportData();
+            String rtDepartureTime = instantJourney.getRtDepartureTime();
+            String rtArrivalTime = instantJourney.getRtArrivalTime();
+
             String combinedData = instantJourney.getCombinedData();
             String deltaT = instantJourney.getDeltaT();
+            String rtCombinedData = instantJourney.getRtCombinedData();
+            String rtDeltaT = instantJourney.getRtDeltaT();
             itemList.add(new JourneyRecycler(
-                    departureTime, arrivalTime,
-                    stopTransportData, timeTransportData, combinedData,
-                    deltaT));
+                    departureTime, arrivalTime, rtDepartureTime, rtArrivalTime,
+                    combinedData, rtCombinedData,
+                    deltaT, rtDeltaT));
         }
-        RecyclerView.Adapter<JourneyAdapter.ViewHolder> adapter = new JourneyAdapter(itemList);
+        RecyclerView.Adapter<JourneyAdapter.ViewHolder> adapter = new JourneyAdapter(itemList, this);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);
@@ -177,4 +180,9 @@ public class ActivityTripList extends AppCompatActivity {
         Log.i("Volley error", error.toString());
         new AlertDial().createMsgDialog(ActivityTripList.this, "Network error", "Couldn't download data").show();
     };
+
+    @Override
+    public void onItemClick(int position) {
+
+    }
 }

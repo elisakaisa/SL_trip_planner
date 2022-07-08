@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -34,7 +35,7 @@ import com.example.sl_trip_planner.data.Stops;
 import com.example.sl_trip_planner.apidata.UrlSetter;
 import com.example.sl_trip_planner.recyclerview.StopAdapter;
 import com.example.sl_trip_planner.recyclerview.StopRecycler;
-import com.example.sl_trip_planner.recyclerview.StopRecyclerViewInterface;
+import com.example.sl_trip_planner.recyclerview.RecyclerViewInterface;
 import com.example.sl_trip_planner.utils.AlertDial;
 import com.example.sl_trip_planner.utils.Helpers;
 import com.google.android.material.switchmaterial.SwitchMaterial;
@@ -42,7 +43,7 @@ import com.google.android.material.switchmaterial.SwitchMaterial;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ActivityStopSearch extends AppCompatActivity implements StopRecyclerViewInterface {
+public class ActivityStopSearch extends AppCompatActivity implements RecyclerViewInterface {
 
     String LOG_TAG = ActivityStopSearch.class.getSimpleName();
 
@@ -91,6 +92,8 @@ public class ActivityStopSearch extends AppCompatActivity implements StopRecycle
         Button btn_go = findViewById(R.id.btn_go);
         timeET = findViewById(R.id.time_ET);
         dateET = findViewById(R.id.date_ET);
+        ImageButton tripTime = findViewById(R.id.img_btn_clock);
+        ImageButton tripDate = findViewById(R.id.img_btn_calendar);
         SwitchMaterial depArrSwitch = findViewById(R.id.departure_arrival_switch);
         depArrTV = findViewById(R.id.departure_arrival_text);
 
@@ -109,8 +112,8 @@ public class ActivityStopSearch extends AppCompatActivity implements StopRecycle
             String time = String.valueOf(timeET.getText());
             searchJourneys(originId, destinationId, time, date);
         });
-        timeET.setOnClickListener(v -> timePickerDialog());
-        dateET.setOnClickListener(v -> datePickerDialog());
+        tripTime.setOnClickListener(v -> timePickerDialog());
+        tripDate.setOnClickListener(v -> datePickerDialog());
         depArrSwitch.setOnCheckedChangeListener((compoundButton, isChecked) -> {
             if (isChecked) {
                 searchForArrival = 1;
