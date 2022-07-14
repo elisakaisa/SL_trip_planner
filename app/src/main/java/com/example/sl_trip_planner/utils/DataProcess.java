@@ -13,8 +13,9 @@ public class DataProcess {
     private ArrayList<String> mStopList = new ArrayList<>();
     private ArrayList<String> mTransportList= new ArrayList<>();
     private ArrayList<String> mTimeList = new ArrayList<>();
-    private ArrayList<String> mTimeTransport = new ArrayList<>();
-    private ArrayList<String> mStopTransport = new ArrayList<>();
+    private ArrayList<String> mTimeTrimmed = new ArrayList<>();
+    private ArrayList<String> mStopTrimmed = new ArrayList<>();
+    private ArrayList<String> mRtTimeTrimmed = new ArrayList<>();
     private ArrayList<String> mRtTimeList = new ArrayList<>();
 
 
@@ -29,26 +30,36 @@ public class DataProcess {
         mRtTimeList = rtTimeList;
     }
 
-    public ArrayList<String> combineTimeTransport() {
+    public ArrayList<String> trimTimeList() {
+        // takes the times at stops
         for (int i = 0; i < mTransportList.size(); i++) {
             if (!mTransportList.get(i).equals("")) {
-                mTimeTransport.add(mTimeList.get(i*2));
-                mTimeTransport.add(mTransportList.get(i));
-                mTimeTransport.add(mTimeList.get(i*2+1));
+                mTimeTrimmed.add(mTimeList.get(i*2));
+                mTimeTrimmed.add(mTimeList.get(i*2+1));
             }
         }
-        return mTimeTransport;
+        return mTimeTrimmed;
     }
 
-    public ArrayList<String> combineStopTransport() {
+    public ArrayList<String> trimRtTimeList() {
+        // takes the times at stops
         for (int i = 0; i < mTransportList.size(); i++) {
             if (!mTransportList.get(i).equals("")) {
-                mStopTransport.add(mStopList.get(i*2));
-                mStopTransport.add(mTransportList.get(i));
-                mStopTransport.add(mStopList.get(i*2+1));
+                mRtTimeTrimmed.add(mRtTimeList.get(i*2));
+                mRtTimeTrimmed.add(mRtTimeList.get(i*2+1));
             }
         }
-        return mStopTransport;
+        return mRtTimeTrimmed;
+    }
+
+    public ArrayList<String> trimStopList() {
+        for (int i = 0; i < mTransportList.size(); i++) {
+            if (!mTransportList.get(i).equals("")) {
+                mStopTrimmed.add(mStopList.get(i*2));
+                mStopTrimmed.add(mStopList.get(i*2+1));
+            }
+        }
+        return mStopTrimmed;
     }
 
     public String combinedData() {
@@ -111,7 +122,7 @@ public class DataProcess {
         Duration deltaT = Duration.between(start, stop);
         int minutes = deltaT.toMinutesPart();
         int hours = deltaT.toHoursPart();
-        return "Total time: " + hours + ":" + Helpers.padWithZeroes(minutes);
+        return hours + ":" + Helpers.padWithZeroes(minutes);
     }
 
 

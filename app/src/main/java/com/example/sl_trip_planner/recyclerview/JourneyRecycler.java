@@ -7,8 +7,8 @@ import java.util.ArrayList;
 public class JourneyRecycler extends JourneyList {
     private final String mTextArrivalTime, mTextDepartureTime, mTextRtArrivalTime, mTextRtDepartureTime,
             mTextCombinedData, mTextDeltaT, mTextRtCombinedData, mTextRtDeltaT;
-    private final ArrayList<Integer> mLineList;
-    private final ArrayList<String> mDestinationList, mTimeList, mStopList;
+    private final ArrayList<String> mLineList;
+    private final ArrayList<String> mDestinationList, mTimeList, mRtTimeList, mStopList;
 
     public JourneyRecycler(
             String textDepartureTime,
@@ -19,9 +19,10 @@ public class JourneyRecycler extends JourneyList {
             String rtCombinedData,
             String deltaT,
             String rtDeltaT,
-            ArrayList<Integer> lineList,
+            ArrayList<String> lineList,
             ArrayList<String> destinationList,
             ArrayList<String> timeList,
+            ArrayList<String> rtTimeList,
             ArrayList<String> stopList) {
         mTextDepartureTime = textDepartureTime;
         mTextArrivalTime = textArrivalTime;
@@ -34,6 +35,7 @@ public class JourneyRecycler extends JourneyList {
         mLineList = lineList;
         mDestinationList = destinationList;
         mTimeList = timeList;
+        mRtTimeList = rtTimeList;
         mStopList = stopList;
     }
 
@@ -45,8 +47,9 @@ public class JourneyRecycler extends JourneyList {
     public String getTextDeltaT() { return mTextDeltaT; }
     public String getTextRtCombinedData() { return mTextRtCombinedData; }
     public String getTextRtDeltaT() { return mTextRtDeltaT; }
-    public ArrayList<Integer> getTextLineList() { return mLineList; }
+    public ArrayList<String> getTextLineList() { return mLineList; }
     public ArrayList<String> getTextDestinationList() { return mDestinationList; }
     public ArrayList<String> getTextTimeList() { return mTimeList; }
+    public ArrayList<String> getTextRtTimeList() { return mRtTimeList; }
     public ArrayList<String> getTextStopList() { return mStopList; }
 }

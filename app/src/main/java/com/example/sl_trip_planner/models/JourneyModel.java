@@ -7,11 +7,9 @@ public class JourneyModel {
     private ArrayList<String> mStopList;
     private ArrayList<String> mTimeList, mRtTimeList;
     private ArrayList<String> mTransportList;
-    private ArrayList<String> mTimeTransportData;
-    private ArrayList<String> mStopTransportData;
     private String mCombinedData, mRtCombinedData;
     private String mDeltaT, mRtDeltaT;
-    private ArrayList<Integer> mLineList;
+    private ArrayList<String> mLineList;
     private ArrayList<String> mDirectionList;
 
     // set methods
@@ -25,15 +23,11 @@ public class JourneyModel {
     public void setTimeList (ArrayList<String> timeList) {mTimeList = timeList; }
     public void setRtTimeList (ArrayList<String> rtTimeList) {mRtTimeList = rtTimeList; }
     public void setTransportList (ArrayList<String> transportList) {mTransportList = transportList;}
-    public void setTimeTransportData(ArrayList<String> timeTransportData) {
-        mTimeTransportData = timeTransportData;}
-    public void setStopTransportData(ArrayList<String> stopTransportData) {
-        mStopTransportData = stopTransportData;}
     public void setCombinedData(String combinedData) { mCombinedData = combinedData; }
     public void setRtCombinedData(String rtCombinedData) { mRtCombinedData = rtCombinedData; }
     public void setDeltaT(String deltaT) { mDeltaT = deltaT; }
     public void setRtDeltaT(String rtDeltaT) { mRtDeltaT = rtDeltaT; }
-    public void setLineList(ArrayList<Integer> lineList) { mLineList = lineList;}
+    public void setLineList(ArrayList<String> lineList) { mLineList = lineList;}
     public void setDirectionList(ArrayList<String> directionList) { mDirectionList = directionList;}
 
     // get methods
@@ -45,13 +39,11 @@ public class JourneyModel {
     public String getRtArrivalTime() { return mRtArrivalTime; }
     public ArrayList<String> getStopList() { return mStopList; }
     public ArrayList<String> getTimeList() { return mTimeList; }
-    public ArrayList<String> getTransportList() { return mTransportList; }
-    public ArrayList<String> getTimeTransportData() { return mTimeTransportData; }
-    public ArrayList<String> getStopTransportData() { return mStopTransportData; }
+    public ArrayList<String> getRtTimeList() { return mRtTimeList; }
     public String getCombinedData() { return mCombinedData; }
     public String getDeltaT() { return mDeltaT; }
     public String getRtCombinedData() { return mRtCombinedData; }
     public String getRtDeltaT() { return mRtDeltaT; }
-    public ArrayList<Integer> getLineList() { return mLineList; }
+    public ArrayList<String> getLineList() { return mLineList; }
     public ArrayList<String> getDirectionList() { return mDirectionList;}
 }

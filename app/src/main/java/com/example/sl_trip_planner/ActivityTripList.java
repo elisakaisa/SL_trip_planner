@@ -165,16 +165,17 @@ public class ActivityTripList extends AppCompatActivity implements RecyclerViewI
             String rtCombinedData = instantJourney.getRtCombinedData();
             String rtDeltaT = instantJourney.getRtDeltaT();
 
-            ArrayList<Integer> lineList = instantJourney.getLineList();
+            ArrayList<String> lineList = instantJourney.getLineList();
             ArrayList<String> destinationList = instantJourney.getDirectionList();
             ArrayList<String> timeList = instantJourney.getTimeList();
+            ArrayList<String> rtTimeList = instantJourney.getRtTimeList();
             ArrayList<String> stopList = instantJourney.getStopList();
             itemList.add(new JourneyRecycler(
                     departureTime, arrivalTime, rtDepartureTime, rtArrivalTime,
                     combinedData, rtCombinedData,
                     deltaT, rtDeltaT,
                     lineList, destinationList,
-                    timeList, stopList));
+                    timeList, rtTimeList, stopList));
         }
         RecyclerView.Adapter<JourneyAdapter.ViewHolder> adapter = new JourneyAdapter(itemList, this);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);

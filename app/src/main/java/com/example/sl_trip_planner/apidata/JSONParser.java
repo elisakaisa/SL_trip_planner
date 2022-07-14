@@ -69,9 +69,7 @@ public class JSONParser {
             ArrayList<String> timeList = new ArrayList<>();
             ArrayList<String> rtTimeList = new ArrayList<>();
             ArrayList<String> transportList = new ArrayList<>();
-            ArrayList<String> timeTransport;
-            ArrayList<String> stopTransport;
-            ArrayList<Integer> lineList = new ArrayList<>();
+            ArrayList<String> lineList = new ArrayList<>();
             ArrayList<String> directionList = new ArrayList<>();
 
             for (int j = 0; j < leg.length(); j++) {
@@ -113,7 +111,7 @@ public class JSONParser {
                 // Product
                 if (details2.has("Product")) {
                     JSONObject product = details2.getJSONObject("Product");
-                    lineList.add(product.getInt("line"));
+                    lineList.add(product.getString("line"));
                 }
 
                 // destination
@@ -132,20 +130,12 @@ public class JSONParser {
             instantJourney.setRtDepartureTime(originRtTimeList.get(0));
             instantJourney.setRtArrivalTime(destinationRtTimeList.get(destinationRtTimeList.size()-1));
 
-            // transport, stops, and times
-            instantJourney.setTransportList(transportList);
-            instantJourney.setStopList(stopList);
-            instantJourney.setTimeList(timeList);
-            instantJourney.setRtTimeList(rtTimeList);
-
             // line and direction
             instantJourney.setLineList(lineList);
             instantJourney.setDirectionList(directionList);
 
             // DATA PROCESSING
             cDataProcess.setStopTimeTransport(stopList, transportList, timeList, rtTimeList);
-            //timeTransport = cDataProcess.combineTimeTransport();
-            //stopTransport = cDataProcess.combineStopTransport();
             String outcome = cDataProcess.combinedData();
             String rtOutcome = cDataProcess.rtCombinedData();
             String deltaT = null;
@@ -154,6 +144,15 @@ public class JSONParser {
                 deltaT = cDataProcess.setTime(originTimeList.get(0), destinationTimeList.get(destinationTimeList.size()-1));
                 rtDeltaT = cDataProcess.setTime(originRtTimeList.get(0), destinationRtTimeList.get(destinationRtTimeList.size()-1));
             }
+            timeList = cDataProcess.trimTimeList();
+            rtTimeList = cDataProcess.trimRtTimeList();
+            stopList = cDataProcess.trimStopList();
+
+            // transport, stops, and times
+            instantJourney.setTransportList(transportList);
+            instantJourney.setStopList(stopList);
+            instantJourney.setTimeList(timeList);
+            instantJourney.setRtTimeList(rtTimeList);
 
             instantJourney.setCombinedData(outcome);
             instantJourney.setRtCombinedData(rtOutcome);
