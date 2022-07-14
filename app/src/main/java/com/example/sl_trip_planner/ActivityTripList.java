@@ -80,12 +80,13 @@ public class ActivityTripList extends AppCompatActivity implements RecyclerViewI
 
         /*-------- INTENT -----------*/
         Intent intent = getIntent();
-        /*------- DATA ---------*/
         int originId = intent.getIntExtra(Stops.ORIGIN_ID, 0);
         int destinationId = intent.getIntExtra(Stops.DESTINATION_ID, 0);
         String time = intent.getStringExtra(Stops.TIME);
         String date = intent.getStringExtra(Stops.DATE);
         int searchForArrival = intent.getIntExtra(Stops.SEARCHFORARRIVAL, 0);
+
+        /*------- DATA ---------*/
         mUrl = UrlSetter.setTripUrl(originId, destinationId, time, date, searchForArrival);
 
         /*---------- HOOKS ------------*/
@@ -163,10 +164,17 @@ public class ActivityTripList extends AppCompatActivity implements RecyclerViewI
             String deltaT = instantJourney.getDeltaT();
             String rtCombinedData = instantJourney.getRtCombinedData();
             String rtDeltaT = instantJourney.getRtDeltaT();
+
+            ArrayList<Integer> lineList = instantJourney.getLineList();
+            ArrayList<String> destinationList = instantJourney.getDirectionList();
+            ArrayList<String> timeList = instantJourney.getTimeList();
+            ArrayList<String> stopList = instantJourney.getStopList();
             itemList.add(new JourneyRecycler(
                     departureTime, arrivalTime, rtDepartureTime, rtArrivalTime,
                     combinedData, rtCombinedData,
-                    deltaT, rtDeltaT));
+                    deltaT, rtDeltaT,
+                    lineList, destinationList,
+                    timeList, stopList));
         }
         RecyclerView.Adapter<JourneyAdapter.ViewHolder> adapter = new JourneyAdapter(itemList, this);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);

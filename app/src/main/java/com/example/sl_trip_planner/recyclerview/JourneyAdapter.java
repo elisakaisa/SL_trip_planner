@@ -1,6 +1,5 @@
 package com.example.sl_trip_planner.recyclerview;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,15 +20,23 @@ public class JourneyAdapter extends RecyclerView.Adapter<JourneyAdapter.ViewHold
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         public TextView departureTimeTV, arrivalTimeTV,
-                        transportListTV, stopListTV, deltaTTV;
+                        transportListTV, deltaTTV,
+                        lineTV1, directionTV1,
+                        startTimeTV1, stopTimeTV1,
+                        startStopTV1, stopStopTV1;
 
         public ViewHolder(View itemView, RecyclerViewInterface mRecyclerViewInterface) {
             super(itemView);
             arrivalTimeTV = itemView.findViewById(R.id.arrival_time_text);
             departureTimeTV = itemView.findViewById(R.id.departure_time_text);
             transportListTV = itemView.findViewById(R.id.transport_list);
-            stopListTV = itemView.findViewById(R.id.stop_list);
             deltaTTV = itemView.findViewById(R.id.total_time);
+            lineTV1 = itemView.findViewById(R.id.line_nr_1);
+            directionTV1 = itemView.findViewById(R.id.direction_1);
+            startTimeTV1 = itemView.findViewById(R.id.start_time_1);
+            stopTimeTV1 = itemView.findViewById(R.id.stop_time_1);
+            startStopTV1 = itemView.findViewById(R.id.start_stop_1);
+            stopStopTV1 = itemView.findViewById(R.id.stop_stop_1);
 
             // for clicking on item
             itemView.setOnClickListener(view -> {
@@ -71,7 +78,7 @@ public class JourneyAdapter extends RecyclerView.Adapter<JourneyAdapter.ViewHold
             holder.arrivalTimeTV.setText(currentJourney.getTextArrivalTime());
             holder.deltaTTV.setText(currentJourney.getTextDeltaT());
             holder.transportListTV.setText(currentJourney.getTextCombinedData());
-            //holder.stopListTV.setText(currentJourney.getTextTimeTrabnsportList());
+
         } else {
             holder.departureTimeTV.setText(currentJourney.getTextRtDepartureTime());
             holder.arrivalTimeTV.setText(currentJourney.getTextRtArrivalTime());
@@ -79,7 +86,12 @@ public class JourneyAdapter extends RecyclerView.Adapter<JourneyAdapter.ViewHold
             holder.transportListTV.setText(currentJourney.getTextRtCombinedData());
         }
 
-        //holder.stopListTV.setText(currentJourney.getTextTimeTrabnsportList());
+        holder.lineTV1.setText(String.valueOf(currentJourney.getTextLineList().get(0)));
+        holder.directionTV1.setText(currentJourney.getTextDestinationList().get(0));
+        holder.startTimeTV1.setText(currentJourney.getTextTimeList().get(0));
+        holder.stopTimeTV1.setText(currentJourney.getTextTimeList().get(1));
+        holder.startStopTV1.setText(currentJourney.getTextStopList().get(0));
+        holder.stopStopTV1.setText(currentJourney.getTextStopList().get(1));
     }
 
     // return size of dataset (invoked by layout manager)

@@ -13,4 +13,6 @@
     <string name="next_trips">next trips</string>
     <string name="clock">clock</string>
     <string name="calendar">calendar</string>
+    <string name="start">start</string>
+    <string name="stop">stop</string>
 </resources>

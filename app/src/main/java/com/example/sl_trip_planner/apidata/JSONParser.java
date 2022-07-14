@@ -71,6 +71,8 @@ public class JSONParser {
             ArrayList<String> transportList = new ArrayList<>();
             ArrayList<String> timeTransport;
             ArrayList<String> stopTransport;
+            ArrayList<Integer> lineList = new ArrayList<>();
+            ArrayList<String> directionList = new ArrayList<>();
 
             for (int j = 0; j < leg.length(); j++) {
                 JSONObject details2 = leg.getJSONObject(j);
@@ -92,7 +94,6 @@ public class JSONParser {
                     rtTimeList.add(origin.getString(RT_TIME).substring(0, origin.getString(RT_TIME).length() - 3));
                 }
 
-
                 // Destination
                 JSONObject destination = details2.getJSONObject(DESTINATION);
                 destinationNameList.add(destination.getString(NAME));
@@ -109,6 +110,16 @@ public class JSONParser {
                     rtTimeList.add(destination.getString(RT_TIME).substring(0, destination.getString(RT_TIME).length() - 3));
                 }
 
+                // Product
+                if (details2.has("Product")) {
+                    JSONObject product = details2.getJSONObject("Product");
+                    lineList.add(product.getInt("line"));
+                }
+
+                // destination
+                if (details2.has("direction")) {
+                    directionList.add(details2.getString("direction"));
+                }
 
             }
             // to from (place)
@@ -121,10 +132,15 @@ public class JSONParser {
             instantJourney.setRtDepartureTime(originRtTimeList.get(0));
             instantJourney.setRtArrivalTime(destinationRtTimeList.get(destinationRtTimeList.size()-1));
 
+            // transport, stops, and times
             instantJourney.setTransportList(transportList);
             instantJourney.setStopList(stopList);
             instantJourney.setTimeList(timeList);
             instantJourney.setRtTimeList(rtTimeList);
+
+            // line and direction
+            instantJourney.setLineList(lineList);
+            instantJourney.setDirectionList(directionList);
 
             // DATA PROCESSING
             cDataProcess.setStopTimeTransport(stopList, transportList, timeList, rtTimeList);

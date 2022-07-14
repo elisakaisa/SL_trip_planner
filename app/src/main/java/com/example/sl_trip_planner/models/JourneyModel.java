@@ -11,6 +11,8 @@ public class JourneyModel {
     private ArrayList<String> mStopTransportData;
     private String mCombinedData, mRtCombinedData;
     private String mDeltaT, mRtDeltaT;
+    private ArrayList<Integer> mLineList;
+    private ArrayList<String> mDirectionList;
 
     // set methods
     public void setOrigin(String origin) { mOrigin = origin; }
@@ -31,6 +33,8 @@ public class JourneyModel {
     public void setRtCombinedData(String rtCombinedData) { mRtCombinedData = rtCombinedData; }
     public void setDeltaT(String deltaT) { mDeltaT = deltaT; }
     public void setRtDeltaT(String rtDeltaT) { mRtDeltaT = rtDeltaT; }
+    public void setLineList(ArrayList<Integer> lineList) { mLineList = lineList;}
+    public void setDirectionList(ArrayList<String> directionList) { mDirectionList = directionList;}
 
     // get methods
     public String getOrigin() { return mOrigin; }
@@ -48,4 +52,6 @@ public class JourneyModel {
     public String getDeltaT() { return mDeltaT; }
     public String getRtCombinedData() { return mRtCombinedData; }
     public String getRtDeltaT() { return mRtDeltaT; }
+    public ArrayList<Integer> getLineList() { return mLineList; }
+    public ArrayList<String> getDirectionList() { return mDirectionList;}
 }
