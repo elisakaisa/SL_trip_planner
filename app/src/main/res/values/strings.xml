@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">SL_trip_planner</string>
+    <string name="app_name">SL planner</string>
     <string name="loading_data">loading data</string>
     <string name="to">to</string>
     <string name="from">from</string>

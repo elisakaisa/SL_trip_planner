@@ -7,6 +7,88 @@
     android:background="@drawable/background"
     tools:context=".ActivityHome">
 
+    <LinearLayout
+        android:id="@+id/layout_time"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:gravity="center"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <com.google.android.material.switchmaterial.SwitchMaterial
+            android:id="@+id/departure_arrival_switch_main"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:textOff="@string/departure"
+            android:textOn="@string/arrival" />
+
+        <TextView
+            android:id="@+id/departure_arrival_text_main"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="5"
+            android:gravity="center"
+            android:text="@string/departure" />
+
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="2" />
+
+        <TextView
+            android:id="@+id/time_ET_main"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:layout_weight="4"
+            android:autofillHints="time"
+            android:gravity="center"
+            android:text="@string/time" />
+
+        <ImageButton
+            android:id="@+id/img_btn_clock_main"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="?android:attr/selectableItemBackground"
+            android:contentDescription="@string/clock"
+            app:srcCompat="@drawable/ic_clock" />
+
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="2" />
+
+        <TextView
+            android:id="@+id/date_ET_main"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="6"
+            android:autofillHints="date"
+            android:gravity="center"
+            android:text="@string/date" />
+
+        <ImageButton
+            android:id="@+id/img_btn_calendar_main"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="?android:attr/selectableItemBackground"
+            android:contentDescription="@string/calendar"
+            app:srcCompat="@drawable/ic_calendar" />
+
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1" />
+
+    </LinearLayout>
+
     <Button
         android:id="@+id/button_any"
         android:layout_width="wrap_content"
@@ -15,7 +97,7 @@
         android:text="@string/any_trip"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/layout_time" />
 
     <Button
         android:id="@+id/button"

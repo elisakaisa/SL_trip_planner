@@ -106,6 +106,14 @@ public class ActivityStopSearch extends AppCompatActivity implements RecyclerVie
         search(originSV, true);
         search(destinationSV, false);
 
+        /*-------- INTENT -----------*/
+        Intent intent = getIntent();
+        String timeIntent = intent.getStringExtra(Stops.TIME);
+        String dateIntent = intent.getStringExtra(Stops.DATE);
+        //int searchForArrival = intent.getIntExtra(Stops.SEARCHFORARRIVAL, 0);
+        dateET.setText(dateIntent);
+        timeET.setText(timeIntent);
+
         /*-------- LISTENERS ----------*/
         btn_go.setOnClickListener(v -> {
             String date = String.valueOf(dateET.getText());
