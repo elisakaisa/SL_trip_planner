@@ -6,6 +6,8 @@
         <entry key="app/src/main/res/drawable/background.xml" value="0.2705" />
         <entry key="app/src/main/res/drawable/ic_calendar.xml" value="0.198" />
         <entry key="app/src/main/res/drawable/ic_clock.xml" value="0.198" />
+        <entry key="app/src/main/res/drawable/ic_export.xml" value="0.2105" />
+        <entry key="app/src/main/res/drawable/ic_launcher_background.xml" value="0.2115" />
         <entry key="app/src/main/res/drawable/item_background.xml" value="0.2705" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_stop_search.xml" value="0.33" />

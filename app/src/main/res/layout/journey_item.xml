@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_margin="5dp"
     android:layout_marginStart="10dp"
     android:layout_marginLeft="10dp"
@@ -84,7 +85,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1"
-                android:text="line"
+                android:text="@string/line"
                 tools:ignore="NestedWeights" />
 
             <TextView
@@ -92,7 +93,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1"
-                android:text="direction" />
+                android:text="@string/direction" />
 
         </LinearLayout>
 
@@ -108,7 +109,7 @@
                 android:layout_height="0dp"
                 android:layout_marginEnd="4dp"
                 android:layout_weight="1"
-                android:text="time"
+                android:text="@string/time"
                 tools:ignore="NestedWeights" />
 
             <TextView
@@ -165,7 +166,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1"
-                android:text="line"
+                android:text="@string/line"
                 tools:ignore="NestedWeights" />
 
             <TextView
@@ -173,7 +174,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1"
-                android:text="direction" />
+                android:text="@string/direction" />
 
         </LinearLayout>
 
@@ -189,7 +190,7 @@
                 android:layout_height="0dp"
                 android:layout_marginEnd="4dp"
                 android:layout_weight="1"
-                android:text="time"
+                android:text="@string/time"
                 tools:ignore="NestedWeights" />
 
             <TextView
@@ -248,7 +249,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1"
-                android:text="line"
+                android:text="@string/line"
                 tools:ignore="NestedWeights" />
 
             <TextView
@@ -256,7 +257,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1"
-                android:text="direction" />
+                android:text="@string/direction" />
 
         </LinearLayout>
 
@@ -272,7 +273,7 @@
                 android:layout_height="0dp"
                 android:layout_marginEnd="4dp"
                 android:layout_weight="1"
-                android:text="time"
+                android:text="@string/time"
                 tools:ignore="NestedWeights" />
 
             <TextView
@@ -329,7 +330,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1"
-                android:text="line"
+                android:text="@string/line"
                 tools:ignore="NestedWeights" />
 
             <TextView
@@ -337,7 +338,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1"
-                android:text="direction" />
+                android:text="@string/direction" />
 
         </LinearLayout>
 
@@ -388,6 +389,39 @@
                 android:text="@string/stop" />
 
         </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_line5"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:baselineAligned="false"
+        android:orientation="horizontal"
+        android:paddingTop="8dp"
+        android:layout_below="@id/ll_line4">
+
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="10" />
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="10"
+            android:text="export to google calendar"/>
+        <ImageButton
+            android:id="@+id/img_btn_export"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:background="?android:attr/selectableItemBackground"
+            app:srcCompat="@drawable/ic_export"
+            android:contentDescription="@string/export"/>
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1" />
+
     </LinearLayout>
 
 

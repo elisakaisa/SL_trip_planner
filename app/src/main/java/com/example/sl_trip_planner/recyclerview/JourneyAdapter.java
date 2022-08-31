@@ -1,10 +1,16 @@
 package com.example.sl_trip_planner.recyclerview;
 
+import android.content.Intent;
+import android.icu.util.Calendar;
+import android.provider.CalendarContract;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -74,6 +80,8 @@ public class JourneyAdapter extends RecyclerView.Adapter<JourneyAdapter.ViewHold
             startStopTV4 = itemView.findViewById(R.id.start_stop_4);
             stopStopTV4 = itemView.findViewById(R.id.stop_stop_4);
 
+            ImageButton btn_export = itemView.findViewById(R.id.img_btn_export);
+
             // for clicking on item
             itemView.setOnClickListener(view -> {
                 if (mRecyclerViewInterface != null) {
@@ -86,6 +94,9 @@ public class JourneyAdapter extends RecyclerView.Adapter<JourneyAdapter.ViewHold
                     }
                 }
             });
+
+            // exporting trip to calendar
+            btn_export.setOnClickListener(v -> exportToExternalCalendar());
         }
     }
     // initialize dataset of the adapter
@@ -201,6 +212,31 @@ public class JourneyAdapter extends RecyclerView.Adapter<JourneyAdapter.ViewHold
                 holder.transportListTV.setText(currentJourney.getTextRtCombinedData());
             }
         }
+    }
+
+
+    private void exportToExternalCalendar() {
+        Log.i("adapter", "button pressed");
+        //TODO: make it a listener in other activity
+        /*
+        try {
+            Calendar beginTime = Calendar.getInstance();
+            beginTime.set(CalendarUtils.exportYear(ymdToLocalDate(sEventDate)), CalendarUtils.exportMonth(ymdToLocalDate(sEventDate)),
+                    CalendarUtils.exportDay(ymdToLocalDate(sEventDate)), CalendarUtils.exportHours(sStartTime), CalendarUtils.exportMinutes(sStartTime));
+            Calendar endTime = Calendar.getInstance();
+            endTime.set(CalendarUtils.exportYear(ymdToLocalDate(sEventDate)), CalendarUtils.exportMonth(ymdToLocalDate(sEventDate)),
+                    CalendarUtils.exportDay(ymdToLocalDate(sEventDate)), CalendarUtils.exportHours(sStopTime), CalendarUtils.exportMinutes(sStopTime));
+            Intent intent = new Intent(Intent.ACTION_INSERT)
+                    .setData(CalendarContract.Events.CONTENT_URI)
+                    .putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME, beginTime.getTimeInMillis())
+                    .putExtra(CalendarContract.EXTRA_EVENT_END_TIME, endTime.getTimeInMillis())
+                    .putExtra(CalendarContract.Events.TITLE, sEventName)
+                    .putExtra(CalendarContract.Events.DESCRIPTION, "Group class"); //TODO: add WO description here
+            startActivity(intent);
+        } catch (Exception e) {
+            e.printStackTrace();
+            Toast.makeText(getApplicationContext(), "couldn't export event", Toast.LENGTH_SHORT).show();
+        } */
     }
 
     // return size of dataset (invoked by layout manager)

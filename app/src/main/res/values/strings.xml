@@ -15,4 +15,7 @@
     <string name="calendar">calendar</string>
     <string name="start">start</string>
     <string name="stop">stop</string>
+    <string name="line">line</string>
+    <string name="direction">direction</string>
+    <string name="export">export</string>
 </resources>
