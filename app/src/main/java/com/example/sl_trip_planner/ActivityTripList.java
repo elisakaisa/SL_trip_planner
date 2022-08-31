@@ -6,9 +6,11 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.Handler;
+import android.provider.CalendarContract;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -24,6 +26,7 @@ import com.example.sl_trip_planner.data.JourneyList;
 import com.example.sl_trip_planner.models.JourneyModel;
 import com.example.sl_trip_planner.data.Stops;
 import com.example.sl_trip_planner.apidata.UrlSetter;
+import com.example.sl_trip_planner.recyclerview.ExportButtonInterface;
 import com.example.sl_trip_planner.recyclerview.JourneyAdapter;
 import com.example.sl_trip_planner.recyclerview.JourneyRecycler;
 import com.example.sl_trip_planner.recyclerview.RecyclerViewInterface;
@@ -32,7 +35,7 @@ import com.example.sl_trip_planner.utils.AlertDial;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ActivityTripList extends AppCompatActivity implements RecyclerViewInterface {
+public class ActivityTripList extends AppCompatActivity implements RecyclerViewInterface, ExportButtonInterface {
     private static final String LOG_TAG = "ActivityTripList";
 
     // Volley & data
@@ -177,7 +180,7 @@ public class ActivityTripList extends AppCompatActivity implements RecyclerViewI
                     lineList, destinationList,
                     timeList, rtTimeList, stopList));
         }
-        RecyclerView.Adapter<JourneyAdapter.ViewHolder> adapter = new JourneyAdapter(itemList, this);
+        RecyclerView.Adapter<JourneyAdapter.ViewHolder> adapter = new JourneyAdapter(itemList, this, this);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);
@@ -193,5 +196,29 @@ public class ActivityTripList extends AppCompatActivity implements RecyclerViewI
     @Override
     public void onItemClick(int position) {
 
+    }
+
+    @Override
+    public void onExportClick(boolean exported, String title, String description, String startTime, String endTime) {
+        Log.d(LOG_TAG, "onExportClick successful " + exported + " " + startTime + " " + endTime);
+        try {
+            /*Calendar beginTime = Calendar.getInstance();
+            beginTime.set(CalendarUtils.exportYear(ymdToLocalDate(sEventDate)), CalendarUtils.exportMonth(ymdToLocalDate(sEventDate)),
+                    CalendarUtils.exportDay(ymdToLocalDate(sEventDate)), CalendarUtils.exportHours(sStartTime), CalendarUtils.exportMinutes(sStartTime));
+            Calendar endTime = Calendar.getInstance();
+            endTime.set(CalendarUtils.exportYear(ymdToLocalDate(sEventDate)), CalendarUtils.exportMonth(ymdToLocalDate(sEventDate)),
+                    CalendarUtils.exportDay(ymdToLocalDate(sEventDate)), CalendarUtils.exportHours(sStopTime), CalendarUtils.exportMinutes(sStopTime));
+                    */
+            Intent intent = new Intent(Intent.ACTION_INSERT)
+                    .setData(CalendarContract.Events.CONTENT_URI)
+                    //.putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME, beginTime.getTimeInMillis())
+                    //.putExtra(CalendarContract.EXTRA_EVENT_END_TIME, endTime.getTimeInMillis())
+                    .putExtra(CalendarContract.Events.TITLE, "trip") //TODO:
+                    .putExtra(CalendarContract.Events.DESCRIPTION, "Group class"); //TODO: add WO description here
+            startActivity(intent);
+        } catch (Exception e) {
+            e.printStackTrace();
+            Toast.makeText(getApplicationContext(), "couldn't export event", Toast.LENGTH_SHORT).show();
+        }
     }
 }
