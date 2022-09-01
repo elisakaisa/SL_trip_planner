@@ -122,6 +122,11 @@ public class DataProcess {
         Duration deltaT = Duration.between(start, stop);
         int minutes = deltaT.toMinutesPart();
         int hours = deltaT.toHoursPart();
+
+        // take into account deltaT if date changes
+        if (hours < 0) { hours = 23 + hours; }
+        if (minutes < 0) { minutes = 60 + minutes; }
+
         return hours + ":" + Helpers.padWithZeroes(minutes);
     }
 

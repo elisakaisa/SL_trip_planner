@@ -59,6 +59,7 @@ public class ActivityTripList extends AppCompatActivity implements RecyclerViewI
     private String scrB;
     private String scrF;
     private String date;
+    private String date2;
 
     // runs in onStart
     private final Runnable timerRunnable = new Runnable() {
@@ -82,7 +83,6 @@ public class ActivityTripList extends AppCompatActivity implements RecyclerViewI
         }
     };
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -96,9 +96,6 @@ public class ActivityTripList extends AppCompatActivity implements RecyclerViewI
         date = intent.getStringExtra(Stops.DATE);
         int searchForArrival = intent.getIntExtra(Stops.SEARCHFORARRIVAL, 0);
 
-        // make sure that there is a date, even if chosen date is today
-        if (date.equals("date")) date = String.valueOf(LocalDate.now());
-        // TODO: fix issue of deltaT and date beiung wrong if trip between 2 days
 
         /*------- DATA ---------*/
         mUrl = UrlSetter.setTripUrl(originId, destinationId, time, date, searchForArrival);
@@ -209,18 +206,28 @@ public class ActivityTripList extends AppCompatActivity implements RecyclerViewI
 
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public void onExportClick(boolean exported, String title, String description, String startTime, String endTime) {
-        Log.d(LOG_TAG, "onExportClick successful " + exported + " " + startTime + " " + endTime);
-        try {
-            // TODO: add date
-            Calendar beginTime = Calendar.getInstance();
-            beginTime.set(CalendarUtils.exportYear(date), CalendarUtils.exportMonth(date),
-                    CalendarUtils.exportDay(date), CalendarUtils.exportHours(startTime), CalendarUtils.exportMinutes(startTime));
-            Calendar stopTime = Calendar.getInstance();
+
+        // make sure that there is a date, even if chosen date is today
+        if (date.equals("date")) date = String.valueOf(LocalDate.now());
+        Calendar beginTime = Calendar.getInstance();
+        Calendar stopTime = Calendar.getInstance();
+
+        beginTime.set(CalendarUtils.exportYear(date), CalendarUtils.exportMonth(date),
+                CalendarUtils.exportDay(date), CalendarUtils.exportHours(startTime), CalendarUtils.exportMinutes(startTime));
+
+        // account for dep arrival on diferent days
+        if (CalendarUtils.depArrOnDifferentDays(startTime, endTime)) {
+            stopTime.set(CalendarUtils.exportYear(date), CalendarUtils.exportMonth(date),
+                    CalendarUtils.exportDayPlusOne(date), CalendarUtils.exportHours(endTime), CalendarUtils.exportMinutes(endTime));
+        } else {
             stopTime.set(CalendarUtils.exportYear(date), CalendarUtils.exportMonth(date),
                     CalendarUtils.exportDay(date), CalendarUtils.exportHours(endTime), CalendarUtils.exportMinutes(endTime));
+        }
 
+        try {
             Intent intent = new Intent(Intent.ACTION_INSERT)
                     .setData(CalendarContract.Events.CONTENT_URI)
                     .putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME, beginTime.getTimeInMillis())
