@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.CalendarContract;
@@ -12,6 +13,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -31,8 +33,11 @@ import com.example.sl_trip_planner.recyclerview.JourneyAdapter;
 import com.example.sl_trip_planner.recyclerview.JourneyRecycler;
 import com.example.sl_trip_planner.recyclerview.RecyclerViewInterface;
 import com.example.sl_trip_planner.utils.AlertDial;
+import com.example.sl_trip_planner.utils.CalendarUtils;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 public class ActivityTripList extends AppCompatActivity implements RecyclerViewInterface, ExportButtonInterface {
@@ -53,6 +58,7 @@ public class ActivityTripList extends AppCompatActivity implements RecyclerViewI
     /*-------- VAR -------*/
     private String scrB;
     private String scrF;
+    private String date;
 
     // runs in onStart
     private final Runnable timerRunnable = new Runnable() {
@@ -76,6 +82,7 @@ public class ActivityTripList extends AppCompatActivity implements RecyclerViewI
         }
     };
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -86,8 +93,12 @@ public class ActivityTripList extends AppCompatActivity implements RecyclerViewI
         int originId = intent.getIntExtra(Stops.ORIGIN_ID, 0);
         int destinationId = intent.getIntExtra(Stops.DESTINATION_ID, 0);
         String time = intent.getStringExtra(Stops.TIME);
-        String date = intent.getStringExtra(Stops.DATE);
+        date = intent.getStringExtra(Stops.DATE);
         int searchForArrival = intent.getIntExtra(Stops.SEARCHFORARRIVAL, 0);
+
+        // make sure that there is a date, even if chosen date is today
+        if (date.equals("date")) date = String.valueOf(LocalDate.now());
+        // TODO: fix issue of deltaT and date beiung wrong if trip between 2 days
 
         /*------- DATA ---------*/
         mUrl = UrlSetter.setTripUrl(originId, destinationId, time, date, searchForArrival);
@@ -202,17 +213,18 @@ public class ActivityTripList extends AppCompatActivity implements RecyclerViewI
     public void onExportClick(boolean exported, String title, String description, String startTime, String endTime) {
         Log.d(LOG_TAG, "onExportClick successful " + exported + " " + startTime + " " + endTime);
         try {
-            /*Calendar beginTime = Calendar.getInstance();
-            beginTime.set(CalendarUtils.exportYear(ymdToLocalDate(sEventDate)), CalendarUtils.exportMonth(ymdToLocalDate(sEventDate)),
-                    CalendarUtils.exportDay(ymdToLocalDate(sEventDate)), CalendarUtils.exportHours(sStartTime), CalendarUtils.exportMinutes(sStartTime));
-            Calendar endTime = Calendar.getInstance();
-            endTime.set(CalendarUtils.exportYear(ymdToLocalDate(sEventDate)), CalendarUtils.exportMonth(ymdToLocalDate(sEventDate)),
-                    CalendarUtils.exportDay(ymdToLocalDate(sEventDate)), CalendarUtils.exportHours(sStopTime), CalendarUtils.exportMinutes(sStopTime));
-                    */
+            // TODO: add date
+            Calendar beginTime = Calendar.getInstance();
+            beginTime.set(CalendarUtils.exportYear(date), CalendarUtils.exportMonth(date),
+                    CalendarUtils.exportDay(date), CalendarUtils.exportHours(startTime), CalendarUtils.exportMinutes(startTime));
+            Calendar stopTime = Calendar.getInstance();
+            stopTime.set(CalendarUtils.exportYear(date), CalendarUtils.exportMonth(date),
+                    CalendarUtils.exportDay(date), CalendarUtils.exportHours(endTime), CalendarUtils.exportMinutes(endTime));
+
             Intent intent = new Intent(Intent.ACTION_INSERT)
                     .setData(CalendarContract.Events.CONTENT_URI)
-                    //.putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME, beginTime.getTimeInMillis())
-                    //.putExtra(CalendarContract.EXTRA_EVENT_END_TIME, endTime.getTimeInMillis())
+                    .putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME, beginTime.getTimeInMillis())
+                    .putExtra(CalendarContract.EXTRA_EVENT_END_TIME, stopTime.getTimeInMillis())
                     .putExtra(CalendarContract.Events.TITLE, "trip") //TODO:
                     .putExtra(CalendarContract.Events.DESCRIPTION, "Group class"); //TODO: add WO description here
             startActivity(intent);
