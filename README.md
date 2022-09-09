@@ -58,6 +58,11 @@ Then once the user has filled all details, the trips can be viewed, the same way
 In the Trip RecyclerView, pressing on the trip shows real-time data and possible delays.
 And from there the trip can be exported to the users calendar using calendar provider api.
 
+<p float="left">
+  <img src="https://user-images.githubusercontent.com/79315440/189426009-2bc0a748-857f-4a2a-aefe-808095351d83.jpg" width="300" />
+  <img src="https://user-images.githubusercontent.com/79315440/189426103-fd73a39e-53f1-4856-badc-e5d84f5aedfb.jpg" width="300" /> 
+</p>
+
 ## Known issues and improvements
 
 Known issues:
@@ -66,8 +71,10 @@ Known issues:
 
 Improvements:
 - Add data about the train/bus line's trip (similar to the SL app)
+- Add description text to the exported event
 - Add data about what platform the bus/train leaves
 - Fix date issue by fetching date and time from the api instead
+- Improve UI and add theme
 
 ## Authors
 
