@@ -209,7 +209,7 @@ public class ActivityTripList extends AppCompatActivity implements RecyclerViewI
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
-    public void onExportClick(boolean exported, String title, String description, String startTime, String endTime, String startDate, String endDate) {
+    public void onExportClick(boolean exported, String description, String startTime, String endTime, String startDate, String endDate) {
 
         Calendar beginTime = Calendar.getInstance();
         Calendar stopTime = Calendar.getInstance();
@@ -226,7 +226,7 @@ public class ActivityTripList extends AppCompatActivity implements RecyclerViewI
                     .putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME, beginTime.getTimeInMillis())
                     .putExtra(CalendarContract.EXTRA_EVENT_END_TIME, stopTime.getTimeInMillis())
                     .putExtra(CalendarContract.Events.TITLE, fromToString)
-                    .putExtra(CalendarContract.Events.DESCRIPTION, "Group class"); //TODO: add WO description here
+                    .putExtra(CalendarContract.Events.DESCRIPTION, description);
             startActivity(intent);
         } catch (Exception e) {
             e.printStackTrace();
