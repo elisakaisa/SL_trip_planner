@@ -6,6 +6,8 @@ public interface ExportButtonInterface {
             String title,
             String description,
             String startTime,
-            String endTime
+            String endTime,
+            String startDate,
+            String endDate
     );
 }

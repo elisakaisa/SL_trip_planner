@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 public class JourneyModel {
     private String mOrigin, mDestination, mDepartureTime, mArrivalTime, mRtDepartureTime, mRtArrivalTime;
+    private String mArrivalDate, mDepartureDate;
     private ArrayList<String> mStopList;
     private ArrayList<String> mTimeList, mRtTimeList;
     private ArrayList<String> mTransportList;
@@ -17,6 +18,8 @@ public class JourneyModel {
     public void setDestination(String destination) { mDestination = destination; }
     public void setDepartureTime (String departureTime) { mDepartureTime = departureTime; }
     public void setArrivalTime (String arrivalTime) { mArrivalTime = arrivalTime; }
+    public void setDepartureDate (String departureDate) { mDepartureDate = departureDate; }
+    public void setArrivalDate (String arrivalDate) { mArrivalDate = arrivalDate; }
     public void setRtDepartureTime (String rtDepartureTime) { mRtDepartureTime = rtDepartureTime; }
     public void setRtArrivalTime (String rtArrivalTime) { mRtArrivalTime = rtArrivalTime; }
     public void setStopList (ArrayList<String> stopList) {mStopList = stopList; }
@@ -35,6 +38,8 @@ public class JourneyModel {
     public String getDestination() { return mDestination; }
     public String getDepartureTime() { return mDepartureTime; }
     public String getArrivalTime() { return mArrivalTime; }
+    public String getDepartureDate() { return mDepartureDate; }
+    public String getArrivalDate() { return mArrivalDate; }
     public String getRtDepartureTime() { return mRtDepartureTime; }
     public String getRtArrivalTime() { return mRtArrivalTime; }
     public ArrayList<String> getStopList() { return mStopList; }

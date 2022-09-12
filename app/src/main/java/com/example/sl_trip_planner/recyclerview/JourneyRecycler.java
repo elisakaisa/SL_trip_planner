@@ -6,11 +6,14 @@ import java.util.ArrayList;
 
 public class JourneyRecycler extends JourneyList {
     private final String mTextArrivalTime, mTextDepartureTime, mTextRtArrivalTime, mTextRtDepartureTime,
-            mTextCombinedData, mTextDeltaT, mTextRtCombinedData, mTextRtDeltaT;
+            mTextCombinedData, mTextDeltaT, mTextRtCombinedData, mTextRtDeltaT,
+            mTextArrivalDate, mTextDepartureDate;
     private final ArrayList<String> mLineList;
     private final ArrayList<String> mDestinationList, mTimeList, mRtTimeList, mStopList;
 
     public JourneyRecycler(
+            String textDepartureDate,
+            String textArrivalDate,
             String textDepartureTime,
             String textArrivalTime,
             String textRtDepartureTime,
@@ -24,6 +27,8 @@ public class JourneyRecycler extends JourneyList {
             ArrayList<String> timeList,
             ArrayList<String> rtTimeList,
             ArrayList<String> stopList) {
+        mTextDepartureDate = textDepartureDate;
+        mTextArrivalDate = textArrivalDate;
         mTextDepartureTime = textDepartureTime;
         mTextArrivalTime = textArrivalTime;
         mTextRtDepartureTime = textRtDepartureTime;
@@ -41,6 +46,8 @@ public class JourneyRecycler extends JourneyList {
 
     public String getTextDepartureTime() { return mTextDepartureTime; }
     public String getTextArrivalTime() { return mTextArrivalTime; }
+    public String getTextDepartureDate() { return mTextDepartureDate; }
+    public String getTextArrivalDate() { return mTextArrivalDate; }
     public String getTextRtDepartureTime() { return mTextRtDepartureTime; }
     public String getTextRtArrivalTime() { return mTextRtArrivalTime; }
     public String getTextCombinedData() { return mTextCombinedData; }

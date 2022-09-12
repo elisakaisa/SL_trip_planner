@@ -134,6 +134,8 @@ public class JourneyAdapter extends RecyclerView.Adapter<JourneyAdapter.ViewHold
         // get data to export
         String departureTime = currentJourney.getTextDepartureTime();
         String arrivalTime = currentJourney.getTextArrivalTime();
+        String departureDate = currentJourney.getTextDepartureDate();
+        String arrivalDate = currentJourney.getTextArrivalDate();
 
         // Start & stop data, time
         if (!rtData) {
@@ -228,7 +230,9 @@ public class JourneyAdapter extends RecyclerView.Adapter<JourneyAdapter.ViewHold
                     "insert title",
                     "description",
                     departureTime,
-                    arrivalTime
+                    arrivalTime,
+                    departureDate,
+                    arrivalDate
                     );
         });
     }
