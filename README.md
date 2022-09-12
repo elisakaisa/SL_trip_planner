@@ -66,7 +66,6 @@ And from there the trip can be exported to the users calendar using calendar pro
 ## Known issues and improvements
 
 Known issues:
-- If the user scrolls down to a trip on the following day, when the date is exported, it will be wrong.
 - Some confusion between departure and arrival stops when choosing them.
 
 Improvements:
