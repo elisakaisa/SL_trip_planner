@@ -59,7 +59,7 @@ public class ActivityTripList extends AppCompatActivity implements RecyclerViewI
     private String scrB;
     private String scrF;
     private String date;
-    private String date2;
+    private String fromToString;
 
     // runs in onStart
     private final Runnable timerRunnable = new Runnable() {
@@ -147,8 +147,8 @@ public class ActivityTripList extends AppCompatActivity implements RecyclerViewI
 
                             String origin = journeyList.get(0).getOrigin();
                             String destination = journeyList.get(0).getDestination();
-                            String s = origin + " -> " + destination;
-                            from_to_TV.setText(s);
+                            fromToString = origin + " -> " + destination;
+                            from_to_TV.setText(fromToString);
 
                             // get context data for previous and following trips
                             scrB = parser.getScrBFromParser();
@@ -168,6 +168,8 @@ public class ActivityTripList extends AppCompatActivity implements RecyclerViewI
         for (JourneyModel instantJourney : journeyData) {
             String departureTime = instantJourney.getDepartureTime();
             String arrivalTime = instantJourney.getArrivalTime();
+            String departureDate = instantJourney.getDepartureDate();
+            String arrivalDate = instantJourney.getArrivalDate();
             String rtDepartureTime = instantJourney.getRtDepartureTime();
             String rtArrivalTime = instantJourney.getRtArrivalTime();
 
@@ -181,7 +183,7 @@ public class ActivityTripList extends AppCompatActivity implements RecyclerViewI
             ArrayList<String> timeList = instantJourney.getTimeList();
             ArrayList<String> rtTimeList = instantJourney.getRtTimeList();
             ArrayList<String> stopList = instantJourney.getStopList();
-            itemList.add(new JourneyRecycler(
+            itemList.add(new JourneyRecycler(departureDate, arrivalDate,
                     departureTime, arrivalTime, rtDepartureTime, rtArrivalTime,
                     combinedData, rtCombinedData,
                     deltaT, rtDeltaT,
@@ -203,37 +205,28 @@ public class ActivityTripList extends AppCompatActivity implements RecyclerViewI
 
     @Override
     public void onItemClick(int position) {
-
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
-    public void onExportClick(boolean exported, String title, String description, String startTime, String endTime) {
+    public void onExportClick(boolean exported, String description, String startTime, String endTime, String startDate, String endDate) {
 
-        // make sure that there is a date, even if chosen date is today
-        if (date.equals("date")) date = String.valueOf(LocalDate.now());
         Calendar beginTime = Calendar.getInstance();
         Calendar stopTime = Calendar.getInstance();
 
-        beginTime.set(CalendarUtils.exportYear(date), CalendarUtils.exportMonth(date),
-                CalendarUtils.exportDay(date), CalendarUtils.exportHours(startTime), CalendarUtils.exportMinutes(startTime));
+        beginTime.set(CalendarUtils.exportYear(startDate), CalendarUtils.exportMonth(startDate),
+                CalendarUtils.exportDay(startDate), CalendarUtils.exportHours(startTime), CalendarUtils.exportMinutes(startTime));
 
-        // account for dep arrival on diferent days
-        if (CalendarUtils.depArrOnDifferentDays(startTime, endTime)) {
-            stopTime.set(CalendarUtils.exportYear(date), CalendarUtils.exportMonth(date),
-                    CalendarUtils.exportDayPlusOne(date), CalendarUtils.exportHours(endTime), CalendarUtils.exportMinutes(endTime));
-        } else {
-            stopTime.set(CalendarUtils.exportYear(date), CalendarUtils.exportMonth(date),
-                    CalendarUtils.exportDay(date), CalendarUtils.exportHours(endTime), CalendarUtils.exportMinutes(endTime));
-        }
+        stopTime.set(CalendarUtils.exportYear(endDate), CalendarUtils.exportMonth(endDate),
+                CalendarUtils.exportDay(endDate), CalendarUtils.exportHours(endTime), CalendarUtils.exportMinutes(endTime));
 
         try {
             Intent intent = new Intent(Intent.ACTION_INSERT)
                     .setData(CalendarContract.Events.CONTENT_URI)
                     .putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME, beginTime.getTimeInMillis())
                     .putExtra(CalendarContract.EXTRA_EVENT_END_TIME, stopTime.getTimeInMillis())
-                    .putExtra(CalendarContract.Events.TITLE, "trip") //TODO:
-                    .putExtra(CalendarContract.Events.DESCRIPTION, "Group class"); //TODO: add WO description here
+                    .putExtra(CalendarContract.Events.TITLE, fromToString)
+                    .putExtra(CalendarContract.Events.DESCRIPTION, description);
             startActivity(intent);
         } catch (Exception e) {
             e.printStackTrace();

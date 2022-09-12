@@ -23,6 +23,7 @@ public class JSONParser {
             DESTINATION = "Destination",
             NAME = "name",
             TIME = "time",
+            DATE = "date",
             RT_TIME = "rtTime";
 
     public List<StopModel> getStops(JSONObject stopObj, Context context) throws JSONException {
@@ -62,8 +63,10 @@ public class JSONParser {
             ArrayList<String> originNameList = new ArrayList<>();
             ArrayList<String> destinationNameList = new ArrayList<>();
             ArrayList<String> originTimeList = new ArrayList<>();
+            ArrayList<String> originDateList = new ArrayList<>();
             ArrayList<String> originRtTimeList = new ArrayList<>();
             ArrayList<String> destinationTimeList = new ArrayList<>();
+            ArrayList<String> destinationDateList = new ArrayList<>();
             ArrayList<String> destinationRtTimeList = new ArrayList<>();
             ArrayList<String> stopList = new ArrayList<>();
             ArrayList<String> timeList = new ArrayList<>();
@@ -80,6 +83,7 @@ public class JSONParser {
                 JSONObject origin = details2.getJSONObject(ORIGIN);
                 originNameList.add(origin.getString(NAME));
                 originTimeList.add(origin.getString(TIME).substring(0, origin.getString(TIME).length() - 3));
+                originDateList.add(origin.getString(DATE));
                 stopList.add(origin.getString(NAME));
                 timeList.add(origin.getString(TIME).substring(0, origin.getString(TIME).length() - 3));
 
@@ -96,6 +100,7 @@ public class JSONParser {
                 JSONObject destination = details2.getJSONObject(DESTINATION);
                 destinationNameList.add(destination.getString(NAME));
                 destinationTimeList.add(destination.getString(TIME).substring(0, destination.getString(TIME).length() - 3));
+                destinationDateList.add(destination.getString(DATE));
                 stopList.add(destination.getString(NAME));
                 timeList.add(destination.getString(TIME).substring(0, destination.getString(TIME).length() - 3));
 
@@ -123,7 +128,9 @@ public class JSONParser {
             // to from (place)
             instantJourney.setOrigin(originNameList.get(0));
             instantJourney.setDestination(destinationNameList.get(destinationNameList.size()-1));
-            // to from (time)
+            // to from (date & time)
+            instantJourney.setDepartureDate(originDateList.get(0));
+            instantJourney.setArrivalDate(destinationDateList.get(destinationDateList.size()-1));
             instantJourney.setDepartureTime(originTimeList.get(0));
             instantJourney.setArrivalTime(destinationTimeList.get(destinationTimeList.size()-1));
             // to from (real-time)

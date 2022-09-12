@@ -124,6 +124,8 @@ public class JourneyAdapter extends RecyclerView.Adapter<JourneyAdapter.ViewHold
         // get elements from dataset & replace the contents of the view with that element
         JourneyRecycler currentJourney = (JourneyRecycler) mJourney.get(position);
 
+        String tripDescription = currentJourney.getTextCombinedData();
+
         // get amount of different bus lines to take
         int lengthLines = currentJourney.getTextLineList().size();
         holder.stringLL.setVisibility(View.GONE);
@@ -134,6 +136,8 @@ public class JourneyAdapter extends RecyclerView.Adapter<JourneyAdapter.ViewHold
         // get data to export
         String departureTime = currentJourney.getTextDepartureTime();
         String arrivalTime = currentJourney.getTextArrivalTime();
+        String departureDate = currentJourney.getTextDepartureDate();
+        String arrivalDate = currentJourney.getTextArrivalDate();
 
         // Start & stop data, time
         if (!rtData) {
@@ -222,13 +226,13 @@ public class JourneyAdapter extends RecyclerView.Adapter<JourneyAdapter.ViewHold
 
         // exporting trip to calendar
         holder.btn_export.setOnClickListener(v -> {
-            //exportToExternalCalendar();
             mExportButtonInterface.onExportClick(
                     true,
-                    "insert title",
-                    "description",
+                    tripDescription,
                     departureTime,
-                    arrivalTime
+                    arrivalTime,
+                    departureDate,
+                    arrivalDate
                     );
         });
     }
