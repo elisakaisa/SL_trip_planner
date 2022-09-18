@@ -25,7 +25,7 @@ Then run gradle sync.
 In order to be able to use the application, the ApiKeys can be obtained from [Trafiklab](https://www.trafiklab.se/api/).
 This API key is stored in the class `ApiKey.java`, which is gitignored. The class looks like this:
 
-```bash
+```java
 // app/java/com.example.sl_trip_planner/data/ApiKeys.java
 public class ApiKeys {
 
@@ -35,7 +35,7 @@ public class ApiKeys {
 ```
 
 Also gitignored is the class `Stops.java`, where the user can store the hardcoded stops and their Ids
-```bash
+```java
 // app/java/com.example.sl_trip_planner/data/Stops.java 
 public class Stops {
     public static int STHLMC = 1080; // Stockholm city
