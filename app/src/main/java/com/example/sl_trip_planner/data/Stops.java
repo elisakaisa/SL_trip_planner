@@ -9,6 +9,7 @@ public class Stops {
             HELUND = 9507,
             SSKOG = 7560,
             GUSTAV = 7131,
+            MC = 9200,
             TEK = 9204;
 
     public static String ORIGIN_ID ="Origin ID", DESTINATION_ID = "Destination ID";
@@ -22,5 +23,6 @@ public class Stops {
             Sod = "Södertälje",
             Gustav = "GA-vägen",
             Sskog = "Saltskog",
+            Mc = "Mörby",
             Tek = "KTH";
 }

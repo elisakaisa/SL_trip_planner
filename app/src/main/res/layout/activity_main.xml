@@ -97,7 +97,8 @@
         android:text="@string/any_trip"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/layout_time" />
+        app:layout_constraintTop_toBottomOf="@+id/layout_time"
+        app:cornerRadius="20dp"/>
 
     <Button
         android:id="@+id/button"
@@ -107,7 +108,8 @@
         android:text="Button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button_any" />
+        app:layout_constraintTop_toBottomOf="@+id/button_any"
+        app:cornerRadius="20dp"/>
 
     <Button
         android:id="@+id/button2"
@@ -117,7 +119,8 @@
         android:text="Button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button" />
+        app:layout_constraintTop_toBottomOf="@+id/button"
+        app:cornerRadius="20dp"/>
 
     <Button
         android:id="@+id/button3"
@@ -127,7 +130,8 @@
         android:text="Button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button2" />
+        app:layout_constraintTop_toBottomOf="@+id/button2"
+        app:cornerRadius="20dp"/>
 
     <Button
         android:id="@+id/button4"
@@ -137,7 +141,8 @@
         android:text="Button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button3" />
+        app:layout_constraintTop_toBottomOf="@+id/button3"
+        app:cornerRadius="20dp"/>
 
     <Button
         android:id="@+id/button5"
@@ -147,7 +152,8 @@
         android:text="Button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button4" />
+        app:layout_constraintTop_toBottomOf="@+id/button4"
+        app:cornerRadius="20dp"/>
 
     <Button
         android:id="@+id/button6"
@@ -157,7 +163,8 @@
         android:text="Button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button5" />
+        app:layout_constraintTop_toBottomOf="@+id/button5"
+        app:cornerRadius="20dp"/>
 
     <Button
         android:id="@+id/button7"
@@ -167,7 +174,8 @@
         android:text="Button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button6" />
+        app:layout_constraintTop_toBottomOf="@+id/button6"
+        app:cornerRadius="20dp"/>
 
     <Button
         android:id="@+id/button8"
@@ -177,7 +185,8 @@
         android:text="Button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button7" />
+        app:layout_constraintTop_toBottomOf="@+id/button7"
+        app:cornerRadius="20dp"/>
 
     <Button
         android:id="@+id/button9"
@@ -187,7 +196,8 @@
         android:text="Button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button8" />
+        app:layout_constraintTop_toBottomOf="@+id/button8"
+        app:cornerRadius="20dp"/>
 
     <Button
         android:id="@+id/button10"
@@ -197,7 +207,8 @@
         android:text="Button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button9" />
+        app:layout_constraintTop_toBottomOf="@+id/button9"
+        app:cornerRadius="20dp"/>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

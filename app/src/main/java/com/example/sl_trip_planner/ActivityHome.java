@@ -58,14 +58,18 @@ public class ActivityHome extends AppCompatActivity {
             intent.putExtra(Stops.SEARCHFORARRIVAL, 0);
             startActivity(intent);
         });
-        setButton(button1, Stops.Flem, Stops.SthlmC, Stops.FLEM, Stops.STHLMC);
-        setButton(button2, Stops.SthlmC, Stops.Flem, Stops.STHLMC, Stops.FLEM);
-        setButton(button3, Stops.Gustav, Stops.Sskog, Stops.GUSTAV, Stops.SSKOG);
-        setButton(button4, Stops.Sskog, Stops.Gustav, Stops.SSKOG, Stops.GUSTAV);
-        setButton(button5, Stops.Hud, Stops.Tek, Stops.HUD, Stops.TEK);
-        setButton(button6, Stops.Tek, Stops.Hud, Stops.TEK, Stops.HUD);
-        setButton(button7, Stops.Gustav, Stops.Tek, Stops.GUSTAV, Stops.TEK);
-        setButton(button8, Stops.Tek, Stops.Gustav, Stops.TEK, Stops.GUSTAV);
+
+        setButton(button1, Stops.Sskog, Stops.SthlmC, Stops.SSKOG, Stops.STHLMC);
+        setButton(button2, Stops.SthlmC, Stops.Sskog, Stops.STHLMC, Stops.SSKOG);
+
+        setButton(button3, Stops.Sskog, Stops.Tek, Stops.SSKOG, Stops.TEK);
+        setButton(button4, Stops.Tek, Stops.Sskog, Stops.TEK, Stops.SSKOG);
+
+        setButton(button5, Stops.Sod, Stops.SthlmC, Stops.SOD, Stops.STHLMC);
+        setButton(button6, Stops.SthlmC, Stops.Sod, Stops.STHLMC, Stops.SOD);
+
+        setButton(button7, Stops.Sskog, Stops.Mc, Stops.SSKOG, Stops.MC);
+        setButton(button8, Stops.Mc, Stops.Sskog, Stops.MC, Stops.SSKOG);
 
     }
 
