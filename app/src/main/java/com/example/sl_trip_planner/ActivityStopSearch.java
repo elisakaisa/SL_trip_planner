@@ -110,7 +110,6 @@ public class ActivityStopSearch extends AppCompatActivity implements RecyclerVie
         Intent intent = getIntent();
         String timeIntent = intent.getStringExtra(Stops.TIME);
         String dateIntent = intent.getStringExtra(Stops.DATE);
-        //int searchForArrival = intent.getIntExtra(Stops.SEARCHFORARRIVAL, 0);
         dateET.setText(dateIntent);
         timeET.setText(timeIntent);
 
@@ -155,7 +154,7 @@ public class ActivityStopSearch extends AppCompatActivity implements RecyclerVie
             @Override
             public boolean onQueryTextChange(String s) {
                 start = search;
-                if (s.length() > 7) postVolleyRequest(s);
+                if (s.length() > 4) postVolleyRequest(s);
                 return false;
             }
         });

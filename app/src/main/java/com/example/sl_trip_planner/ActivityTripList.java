@@ -131,6 +131,7 @@ public class ActivityTripList extends AppCompatActivity implements RecyclerViewI
 
     public void postVolleyRequest(String url) {
         Log.i(LOG_TAG, "postVolleyRequest entered");
+        from_to_TV.setText(R.string.loading_data);
             // get data
             JsonObjectRequest tripRequest = new JsonObjectRequest(Request.Method.GET,
                     url,
